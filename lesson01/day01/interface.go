@@ -84,4 +84,12 @@ func main() {
 	for _, shape := range shapes {
 		fmt.Println(shape.Area())
 	}
+
+	var x WalletInterface = &wallet3
+	fmt.Println(x)
+
+	var c Circle = Circle{radius: 5}
+
+	var y Shape = &c
+	fmt.Println(y)
 }

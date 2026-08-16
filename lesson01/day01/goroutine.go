@@ -14,6 +14,13 @@ func main() {
 			fmt.Println(i)
 		}(i)
 	}
-	wg.Wait()
 
+	for i := 11; i <= 20; i++ {
+		wg.Go(func() {
+			defer wg.Done()
+			fmt.Println(i)
+		})
+	}
+
+	wg.Wait()
 }
