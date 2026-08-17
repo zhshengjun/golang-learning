@@ -3,13 +3,16 @@ package operator
 import (
 	"database/utils"
 	"testing"
+
+	"gorm.io/gorm"
 )
 
 func TestUpdateSelect(t *testing.T) {
 
-	db := utils.InitDB()
+	utils.Exec(func(db *gorm.DB) {
 
-	query := utils.User{ID: 20, Name: "test", Age: 51, Status: true}
+		query := utils.User{ID: 20, Name: "test", Age: 51, Status: true}
 
-	db.Model(&query).Select("age", "status").Updates(&query)
+		db.Model(&query).Select("age", "status").Updates(&query)
+	})
 }

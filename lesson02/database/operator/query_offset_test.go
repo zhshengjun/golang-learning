@@ -3,13 +3,15 @@ package operator
 import (
 	"database/utils"
 	"testing"
+
+	"gorm.io/gorm"
 )
 
 func TestQueryOffset(t *testing.T) {
 
-	db := utils.InitDB()
-
-	var query_list []utils.User
-	db.Where(utils.User{Age: 20}).Offset(5).Limit(2).Find(&query_list)
-	utils.FormatePrint(query_list)
+	utils.Exec(func(db *gorm.DB) {
+		var queryList []utils.User
+		db.Where(utils.User{Age: 20}).Offset(0).Limit(2).Find(&queryList)
+		utils.FormatePrint(queryList)
+	})
 }

@@ -10,3 +10,8 @@ type User struct {
 	CreatedAt time.Time `gorm:"autoCreateTime"  json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime"  json:"updated_at"`
 }
+
+type StatusCount struct {
+	Status bool  `json:"status" gorm:"column:status"`
+	Count  int64 `json:"count" gorm:"column:count"`
+}
