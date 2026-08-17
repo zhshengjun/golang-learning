@@ -8,7 +8,7 @@ import (
 )
 
 func TestGroup(t *testing.T) {
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 		var counts []utils.StatusCount
 		db.Model(&utils.User{}).Select("status", "count(*) as count").
 			Group("status").Scan(&counts)

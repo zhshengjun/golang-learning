@@ -9,7 +9,7 @@ import (
 
 func TestQueryTake(t *testing.T) {
 
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 		var user utils.User
 		db.Where(utils.User{Name: "张三"}).
 			Take(&user)

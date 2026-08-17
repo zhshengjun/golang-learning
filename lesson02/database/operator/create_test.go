@@ -10,7 +10,7 @@ import (
 
 func TestCreate(t *testing.T) {
 
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 
 		user := utils.User{
 			Name: "张三",

@@ -10,7 +10,7 @@ import (
 func TestDelete(t *testing.T) {
 
 	// 直接使用 Delete(&user)，需要 user 中有主键
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 		user := utils.User{Name: "张三", ID: 15}
 		db.Delete(&user)
 

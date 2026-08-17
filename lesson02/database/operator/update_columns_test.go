@@ -9,7 +9,7 @@ import (
 
 func TestUpdateColumns(t *testing.T) {
 
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 
 		query := utils.User{ID: 19}
 

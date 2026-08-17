@@ -8,7 +8,7 @@ import (
 )
 
 func TestScopes(t *testing.T) {
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 		var users []utils.User
 		db.Model(&utils.User{}).
 			Scopes(FilterStatus(true), adultUsers(20), Paginate(0, 3)).

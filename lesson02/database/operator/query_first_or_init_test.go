@@ -9,7 +9,7 @@ import (
 
 func TestQueryFirstOrInit(t *testing.T) {
 
-	utils.Exec(func(db *gorm.DB) {
+	utils.ExecSql(func(db *gorm.DB) {
 		var user utils.User
 		// attrs 是创建时的参数，注意后一次 Attrs() 会覆盖前一个
 		db.Where(utils.User{Name: "张三4"}).
