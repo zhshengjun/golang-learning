@@ -1,7 +1,8 @@
-package operator
+package basiced
 
 import (
-	"database/utils"
+	"database/common"
+	"database/models"
 	"log"
 	"testing"
 
@@ -10,9 +11,9 @@ import (
 
 func TestCreate(t *testing.T) {
 
-	utils.ExecSql(func(db *gorm.DB) {
+	common.ExecSql(func(db *gorm.DB) {
 
-		user := utils.User{
+		user := models.User{
 			Name: "张三",
 			Age:  18,
 		}
@@ -21,7 +22,7 @@ func TestCreate(t *testing.T) {
 			log.Fatal(err)
 		}
 
-		users := []utils.User{
+		users := []models.User{
 			{Name: "李四", Age: 18},
 			{Name: "王五", Age: 19},
 			{Name: "周六", Age: 19},
@@ -31,7 +32,7 @@ func TestCreate(t *testing.T) {
 			log.Fatal(err)
 		}
 
-		user = utils.User{Name: "溜", Age: 10}
+		user = models.User{Name: "溜", Age: 10}
 		err = db.Save(&user).Error
 		if err != nil {
 			log.Fatal(err)

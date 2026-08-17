@@ -1,20 +1,21 @@
-package operator
+package basiced
 
 import (
-	"database/utils"
+	"database/common"
+	"database/models"
 	"testing"
 
 	"gorm.io/gorm"
 )
 
 func TestScopes(t *testing.T) {
-	utils.ExecSql(func(db *gorm.DB) {
-		var users []utils.User
-		db.Model(&utils.User{}).
+	common.ExecSql(func(db *gorm.DB) {
+		var users []models.User
+		db.Model(&models.User{}).
 			Scopes(FilterStatus(true), adultUsers(20), Paginate(0, 3)).
 			Find(&users)
 
-		utils.FormatePrint(users)
+		common.FormatePrint(users)
 	})
 }
 

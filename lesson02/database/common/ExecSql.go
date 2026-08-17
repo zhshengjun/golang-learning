@@ -1,4 +1,4 @@
-package utils
+package common
 
 import (
 	"database/sql"
@@ -19,7 +19,8 @@ func ExecSql(f func(*gorm.DB)) {
 	db, err := gorm.Open(
 		mysql.Open(os.Getenv("DSN_MYSQL")),
 		&gorm.Config{
-			Logger: gormLogger.Default.LogMode(gormLogger.Info),
+			DisableForeignKeyConstraintWhenMigrating: true,
+			Logger:                                   gormLogger.Default.LogMode(gormLogger.Info),
 		},
 	)
 	if err != nil {

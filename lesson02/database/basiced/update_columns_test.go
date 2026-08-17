@@ -1,7 +1,8 @@
-package operator
+package basiced
 
 import (
-	"database/utils"
+	"database/common"
+	"database/models"
 	"testing"
 
 	"gorm.io/gorm"
@@ -9,9 +10,9 @@ import (
 
 func TestUpdateColumns(t *testing.T) {
 
-	utils.ExecSql(func(db *gorm.DB) {
+	common.ExecSql(func(db *gorm.DB) {
 
-		query := utils.User{ID: 19}
+		query := models.User{ID: 19}
 
 		db.Model(&query).UpdateColumns(map[string]any{
 			"age":    89,

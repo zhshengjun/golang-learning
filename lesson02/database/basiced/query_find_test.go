@@ -1,7 +1,8 @@
-package operator
+package basiced
 
 import (
-	"database/utils"
+	"database/common"
+	"database/models"
 	"testing"
 
 	"gorm.io/gorm"
@@ -9,12 +10,12 @@ import (
 
 func TestQueryFind(t *testing.T) {
 
-	utils.ExecSql(func(db *gorm.DB) {
-		var users []utils.User
+	common.ExecSql(func(db *gorm.DB) {
+		var users []models.User
 		db.
 			//Where(utils.User{Name: "张三"}).
 			Find(&users)
 
-		utils.FormatePrint(users)
+		common.FormatePrint(users)
 	})
 }

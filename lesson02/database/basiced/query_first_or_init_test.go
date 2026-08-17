@@ -1,7 +1,8 @@
-package operator
+package basiced
 
 import (
-	"database/utils"
+	"database/common"
+	"database/models"
 	"testing"
 
 	"gorm.io/gorm"
@@ -9,14 +10,14 @@ import (
 
 func TestQueryFirstOrInit(t *testing.T) {
 
-	utils.ExecSql(func(db *gorm.DB) {
-		var user utils.User
+	common.ExecSql(func(db *gorm.DB) {
+		var user models.User
 		// attrs 是创建时的参数，注意后一次 Attrs() 会覆盖前一个
-		db.Where(utils.User{Name: "张三4"}).
-			Attrs(utils.User{Age: 20, Status: true}).
+		db.Where(models.User{Name: "张三4"}).
+			Attrs(models.User{Age: 20, Status: true}).
 			//Attrs(utils.User{Status: true}).
 			FirstOrCreate(&user)
 
-		utils.FormatePrint(user)
+		common.FormatePrint(user)
 	})
 }
