@@ -6,7 +6,9 @@ import (
 )
 
 type Shape interface {
+	// 面积
 	Area()
+	// 周长
 	Perimeter()
 }
 
