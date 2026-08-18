@@ -1,0 +1,10 @@
+database:
+  host: https://stupidzhang.online
+  port: 8080
+  user: root
+  password: Zm18829596
+
+server:
+  name: "go-learn"
+  port: 8080
+  desc: "项目描述"
