@@ -35,6 +35,8 @@ func (r Circle) Perimeter() {
 func main() {
 	// rectangle
 	rectangle := Rectangle{10, 20}
+	var sha Shape = rectangle
+	fmt.Printf("类型：%T\n", sha)
 	rectangle.Area()
 	rectangle.Perimeter()
 
