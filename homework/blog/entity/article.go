@@ -20,12 +20,6 @@ type Article struct {
 	UpdateAt      time.Time           `json:"updateAt" gorm:"autoUpdateTime"`
 }
 
-func (a *Article) AfterCreate(db *gorm.DB) error {
-	return db.Model(&User{}).
-		Where("user_name = ?", a.Author).
-		UpdateColumn("article_num", gorm.Expr("article_num + ?", 1)).Error
-}
-
 func (a *Article) AfterUpdate(tx *gorm.DB) error {
 
 	var count int64

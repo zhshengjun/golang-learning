@@ -1,9 +1,10 @@
 package router
 
 import (
-	apperrors "blog/errors"
+	blogerrors "blog/errors"
 	"blog/middleware"
 	"blog/request"
+	"blog/response"
 	"blog/service"
 	"fmt"
 	"net/http"
@@ -35,7 +36,7 @@ func handLogin(loginService *service.LoginService) gin.HandlerFunc {
 		var loginRequest request.LoginRequest
 		err := c.ShouldBindJSON(&loginRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 		login, err := loginService.VerifyPassword(&loginRequest)
@@ -44,7 +45,7 @@ func handLogin(loginService *service.LoginService) gin.HandlerFunc {
 			return
 		}
 		if !login {
-			_ = c.Error(fmt.Errorf("%w: login error", apperrors.ErrBadRequest))
+			_ = c.Error(fmt.Errorf("%w: login error", blogerrors.ErrBadRequest))
 			return
 		}
 
@@ -64,12 +65,15 @@ func handLogin(loginService *service.LoginService) gin.HandlerFunc {
 		signedString, err := token.SignedString(secret)
 		fmt.Printf("登录的签名: %s\n", signedString)
 		setLoginCookie(c, signedString)
+
+		c.JSON(http.StatusOK, response.Success("登录成功"))
 	}
 }
 
 func handLogout() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		deleteLoginCookie(c)
+		c.JSON(http.StatusOK, response.Success("登出成功"))
 	}
 }
 

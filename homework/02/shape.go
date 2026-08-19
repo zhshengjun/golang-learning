@@ -6,10 +6,9 @@ import (
 )
 
 type Shape interface {
-	// 面积
-	Area()
-	// 周长
-	Perimeter()
+	Area() // 面积
+
+	Perimeter() // 周长
 }
 
 type Rectangle struct {

@@ -20,14 +20,6 @@ func Success(data any) gin.H {
 	}
 }
 
-func Exception(data any) gin.H {
-	return gin.H{
-		"code":    http.StatusBadRequest,
-		"message": "",
-		"data":    data,
-	}
-}
-
 func Fail(code int, message string) gin.H {
 	return gin.H{
 		"code":    code,

@@ -1,4 +1,3 @@
-// middleware/auth_handler.go
 package middleware
 
 import (
@@ -14,6 +13,7 @@ import (
 const loginUserKey = "loginUser"
 
 func RequireLogin() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 		secret := []byte(viper.GetString("jwt.secret"))
 		tokenString, err := c.Cookie("blog_token")

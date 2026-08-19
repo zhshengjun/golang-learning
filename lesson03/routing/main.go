@@ -13,11 +13,11 @@ type Register struct {
 	Age      int    `json:"age" binding:"required,gt=0,lt=100"`
 }
 
-type Response struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    any    `json:"data"`
-}
+//type Response struct {
+//	Code    int    `json:"code"`
+//	Message string `json:"message"`
+//	Data    any    `json:"data"`
+//}
 
 func main() {
 

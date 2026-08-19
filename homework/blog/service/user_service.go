@@ -31,8 +31,12 @@ func (s *UserService) UserInfoById(id *int) (request.UserResponse, error) {
 
 	result := s.db.Model(entity.User{}).Where("id = ?", *id).Find(&user)
 
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return response, fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
+	}
+
+	if result.Error != nil {
+		return response, fmt.Errorf("%w: query user error", result.Error)
 	}
 
 	response.UserName = user.UserName
@@ -48,10 +52,14 @@ func (s *UserService) UserPasswordByName(userName *string) (string, error) {
 	}
 	var user entity.User
 
-	result := s.db.Model(entity.User{}).Where("user_name = ?", *userName).Find(&user)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+	result := s.db.Model(entity.User{}).Where("user_name = ? and status = 'ACTIVE'", *userName).Find(&user)
+	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return "", fmt.Errorf("%w: userName not found", apperrors.ErrNotFound)
 	}
+	if result.Error != nil {
+		return "", fmt.Errorf("%w: query user errror", result.Error)
+	}
+
 	return user.Password, nil
 }
 
@@ -97,22 +105,26 @@ func (s *UserService) Updated(updateRequest *request.UserUpdateRequest) error {
 	var user entity.User
 	result := s.db.Model(&entity.User{}).Where("id = ?", updateRequest.Id).Find(&user)
 
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
+	if result.Error != nil {
+		return fmt.Errorf("update user: %w", result.Error)
+	}
+
+	if updateRequest.Operator != user.UserName {
+		return fmt.Errorf("%w: accounts is not permitted", apperrors.ErrForbidden)
+	}
+
 	if enums.UserStatusActive != user.Status {
 		return fmt.Errorf("%w: user status is not active", apperrors.ErrGone)
 	}
-	//user.ID = updateRequest.Id
-	user.UserName = updateRequest.UserName
-	user.Email = updateRequest.Email
-	user.Password = HashPassword(updateRequest.Password)
 
-	result = s.db.Model(&user).
+	result = s.db.Model(&entity.User{}).
+		Where("id = ?", updateRequest.Id).
 		UpdateColumns(map[string]any{
-			"user_name": user.UserName,
-			"password":  user.Password,
-			"email":     user.Email,
+			"password": HashPassword(updateRequest.Password),
+			"email":    updateRequest.Email,
 		})
 	if result.Error != nil {
 		return fmt.Errorf("update user: %w", result.Error)
@@ -125,8 +137,12 @@ func (s *UserService) Deleted(deletedRequest *request.UserDeletedRequest) error 
 	var user entity.User
 	result := s.db.Model(&entity.User{}).Where("id = ?", deletedRequest.Id).Find(&user)
 
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
+	}
+
+	if result.Error != nil {
+		return fmt.Errorf("delete user: %w", result.Error)
 	}
 
 	if deletedRequest.Operator != user.UserName {

@@ -88,7 +88,7 @@ func main() {
 	var x WalletInterface = &wallet3
 	fmt.Println(x)
 
-	var c Circle = Circle{radius: 5}
+	var c = Circle{radius: 5}
 
 	var y Shape = &c
 	fmt.Println(y)

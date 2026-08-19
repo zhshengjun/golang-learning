@@ -1,10 +1,12 @@
 package router
 
 import (
+	blogerrors "blog/errors"
 	"blog/middleware"
 	"blog/request"
 	"blog/response"
 	"blog/service"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -54,7 +56,7 @@ func handleUserRegister(userService *service.UserService) gin.HandlerFunc {
 		var createRequest request.UserCreateRequest
 		err := c.ShouldBindJSON(&createRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 
@@ -74,7 +76,7 @@ func handleUserUpdated(userService *service.UserService) gin.HandlerFunc {
 		var updateRequest request.UserUpdateRequest
 		err := c.ShouldBindJSON(&updateRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 
@@ -97,7 +99,7 @@ func handleUserDeleted(userService *service.UserService) gin.HandlerFunc {
 		var deletedRequest request.UserDeletedRequest
 		err := c.ShouldBindJSON(&deletedRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 

@@ -133,8 +133,12 @@ func checkArticle(s *ArticleService, id int64, operator *string) (entity.Article
 
 	result := s.db.Model(&entity.Article{}).
 		Where("id = ?", id).First(&article)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &article == nil || article.Id == 0 {
+	if &article == nil || article.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return entity.Article{}, fmt.Errorf("%w: article not found", apperrors.ErrNotFound)
+	}
+
+	if result.Error != nil {
+		return entity.Article{}, fmt.Errorf("%w: article error", result.Error)
 	}
 
 	if operator != nil {

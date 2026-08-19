@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	apperrors "blog/errors"
+	blogerrors "blog/errors"
 	"blog/response"
 	"errors"
 	"log/slog"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,19 +34,19 @@ func ErrorHandler() gin.HandlerFunc {
 
 func statusOf(err error) (int, string) {
 	switch {
-	case errors.Is(err, apperrors.ErrBadRequest):
-		return 400, "请求参数错误"
-	case errors.Is(err, apperrors.ErrUnauthorized):
-		return 401, "用户认证失败"
-	case errors.Is(err, apperrors.ErrForbidden):
-		return 403, "没有操作权限"
-	case errors.Is(err, apperrors.ErrNotFound):
-		return 404, "文章、评论或用户不存在"
-	case errors.Is(err, apperrors.ErrConflict):
-		return 409, "数据已存在"
-	case errors.Is(err, apperrors.ErrGone):
-		return 410, "数据状态已变更"
+	case errors.Is(err, blogerrors.ErrBadRequest):
+		return http.StatusBadRequest, "请求参数错误"
+	case errors.Is(err, blogerrors.ErrUnauthorized):
+		return http.StatusUnauthorized, "用户认证失败"
+	case errors.Is(err, blogerrors.ErrForbidden):
+		return http.StatusForbidden, "没有操作权限"
+	case errors.Is(err, blogerrors.ErrNotFound):
+		return http.StatusNotFound, "文章、评论或用户不存在"
+	case errors.Is(err, blogerrors.ErrConflict):
+		return http.StatusConflict, "数据已存在"
+	case errors.Is(err, blogerrors.ErrGone):
+		return http.StatusGone, "数据状态已变更"
 	default:
-		return 500, "服务器内部错误"
+		return http.StatusInternalServerError, "服务器内部错误"
 	}
 }

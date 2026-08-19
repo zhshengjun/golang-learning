@@ -1,6 +1,6 @@
 # Blog
 
-Go 博客后端学习项目，基于 Gin、GORM 和 MySQL，实现用户注册、登录及用户信息管理。
+Go 博客后端学习项目，基于 Gin、GORM 和 MySQL，实现用户、登录和文章管理接口。
 
 ## 运行环境
 
@@ -65,17 +65,37 @@ go build -o blog .
 ./blog
 ```
 
-## 接口
+## 登录接口
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| POST | `/login` | 用户登录 |
+| POST | `/logout` | 退出登录，需要登录 |
+
+## 用户管理接口
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
 | POST | `/user/register` | 用户注册 |
-| POST | `/login` | 用户登录 |
-| POST | `/logout` | 退出登录，需要登录 |
 | GET | `/user/info?id=1` | 查询用户信息，需要登录 |
 | POST | `/user/update` | 更新用户信息，需要登录 |
 | DELETE | `/user/delete` | 删除用户，需要登录 |
 
-## 当前代码状态
+文章接口均需要登录：
 
-当前工作区执行 `go test ./...` 时，`router/article_router.go` 与 `router/user_router.go` 存在同名函数重复定义，项目会在编译阶段失败。修复重复定义后，才能正常执行上述启动命令。
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| POST | `/article/created` | 创建文章 |
+| PUT | `/article/updated` | 更新文章 |
+| PUT | `/article/published` | 发布文章 |
+| DELETE | `/article/deleted` | 删除文章 |
+
+## 检查项目
+
+在 `homework/blog` 目录执行：
+
+```bash
+go test ./...
+```
+
+当前项目可以通过编译检查。启动前仍需确保 `config.yaml` 中的 MySQL 服务可访问，并且目标数据库及所需数据表已经准备好；项目启动代码未执行自动建表。

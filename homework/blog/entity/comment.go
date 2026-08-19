@@ -35,7 +35,7 @@ func (c *Comment) AfterUpdate(tx *gorm.DB) error {
 		return err
 	}
 	status := false
-	if count >= 0 {
+	if count > 0 {
 		status = true
 	}
 

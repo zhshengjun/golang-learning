@@ -1,4 +1,4 @@
-package apperrors
+package blogerrors
 
 import "errors"
 

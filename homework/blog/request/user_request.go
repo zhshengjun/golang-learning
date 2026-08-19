@@ -2,15 +2,14 @@ package request
 
 type UserCreateRequest struct {
 	UserName string `json:"userName" binding:"required,gte=6"`
-	Password string `json:"password" binding:"required,gte=8"`
+	Password string `json:"password" binding:"required,gte=8,lte=32"`
 	Email    string `json:"email" binding:"email"`
 	Operator string `json:"operator"`
 }
 
 type UserUpdateRequest struct {
 	Id       int64  `json:"id" binding:"required"`
-	UserName string `json:"UserName" binding:"required,gte=6"`
-	Password string `json:"password" binding:"required,gte=8"`
+	Password string `json:"password" binding:"required,gte=8,lte=32"`
 	Email    string `json:"email" binding:"email"`
 	Operator string `json:"operator"`
 }

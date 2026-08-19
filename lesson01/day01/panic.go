@@ -12,5 +12,5 @@ func main() {
 
 	fmt.Println("这是正常逻辑，panic 之前")
 	panic("这是逻辑主动抛出panic错误")
-	fmt.Println("panic 之后")
+	//fmt.Println("panic 之后")
 }

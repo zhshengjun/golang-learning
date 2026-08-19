@@ -1,10 +1,12 @@
 package router
 
 import (
+	blogerrors "blog/errors"
 	"blog/middleware"
 	"blog/request"
 	"blog/response"
 	"blog/service"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,9 +36,13 @@ func handleArticleCreated(articleService *service.ArticleService) gin.HandlerFun
 		var createRequest request.ArticleCreateRequest
 		err := c.ShouldBindJSON(&createRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
+
+		name, _ := middleware.CurrentUserName(c)
+
+		createRequest.Author = name
 
 		// 这里还需要做一些校验，比如用户名是否重复，是否有特殊字符等，这里是不是重点
 		err = articleService.Created(&createRequest)
@@ -54,7 +60,7 @@ func handleArticleUpdated(articleService *service.ArticleService) gin.HandlerFun
 		var updateRequest request.ArticleUpdateRequest
 		err := c.ShouldBindJSON(&updateRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 
@@ -77,7 +83,7 @@ func handleArticlePublished(articleService *service.ArticleService) gin.HandlerF
 		var publishedRequest request.ArticlePublishedRequest
 		err := c.ShouldBindJSON(&publishedRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 
@@ -100,7 +106,7 @@ func handleArticleDeleted(articleService *service.ArticleService) gin.HandlerFun
 		var deletedRequest request.ArticleDeleteRequest
 		err := c.ShouldBindJSON(&deletedRequest)
 		if err != nil {
-			_ = c.Error(err)
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
 			return
 		}
 
