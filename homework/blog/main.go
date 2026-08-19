@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blog/middleware"
 	"blog/router"
 	"database/sql"
 	"log"
@@ -24,6 +25,7 @@ func init() {
 
 func main() {
 	engine := gin.Default()
+	engine.Use(middleware.ErrorHandler())
 	db := initDB()
 	defer closeDB(db)
 

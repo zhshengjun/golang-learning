@@ -2,6 +2,8 @@ package service
 
 import (
 	"blog/entity"
+	"blog/enums"
+	apperrors "blog/errors"
 	"blog/request"
 	"errors"
 	"fmt"
@@ -11,25 +13,26 @@ import (
 )
 
 type UserService struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func NewUserService(db *gorm.DB) *UserService {
-	return &UserService{DB: db}
+	return &UserService{db: db}
 }
 
 func (s *UserService) UserInfoById(id *int) (request.UserResponse, error) {
 
+	response := request.UserResponse{}
 	if id == nil {
-		return request.UserResponse{}, nil
+		return response, fmt.Errorf("%w: id is require", apperrors.ErrBadRequest)
 	}
 
 	var user entity.User
-	response := request.UserResponse{}
-	s.DB.Model(entity.User{}).Where("id = ?", *id).Find(&user)
 
-	if &user == nil || user.ID == 0 {
-		return response, errors.New("user not found")
+	result := s.db.Model(entity.User{}).Where("id = ?", *id).Find(&user)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+		return response, fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
 
 	response.UserName = user.UserName
@@ -41,93 +44,104 @@ func (s *UserService) UserInfoById(id *int) (request.UserResponse, error) {
 func (s *UserService) UserPasswordByName(userName *string) (string, error) {
 
 	if userName == nil {
-		return "", nil
+		return "", fmt.Errorf("%w: user name is require", apperrors.ErrBadRequest)
 	}
 	var user entity.User
 
-	s.DB.Model(entity.User{}).Where("user_name = ?", *userName).Find(&user)
-
-	if &user == nil || user.ID == 0 {
-		return "", errors.New("user not found")
+	result := s.db.Model(entity.User{}).Where("user_name = ?", *userName).Find(&user)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+		return "", fmt.Errorf("%w: userName not found", apperrors.ErrNotFound)
 	}
-
 	return user.Password, nil
 }
 
 func (s *UserService) Register(createRequest *request.UserCreateRequest) error {
 	// 先查询用户名是否存在
 	var query entity.User
-	s.DB.Model(entity.User{}).Where("user_name = ?", createRequest.UserName).Find(&query)
+	result := s.db.Model(entity.User{}).Where("user_name = ?", createRequest.UserName).Find(&query)
+	if result.Error != nil {
+		return fmt.Errorf("query user: %w", result.Error)
+	}
 	if query.UserName != "" {
 		log.Println("user name is exist")
-		return errors.New("user name is exist")
+		return fmt.Errorf("%w: user name is exist", apperrors.ErrConflict)
 	}
-	s.DB.Model(entity.User{}).Where("email = ?", createRequest.Email).Find(&query)
+
+	result = s.db.Model(&entity.User{}).Where("email = ?", createRequest.Email).Find(&query)
+	if result.Error != nil {
+		return fmt.Errorf("query user: %w", result.Error)
+	}
 
 	if query.Email != "" {
 		log.Println("email is exist")
-		return errors.New("email is exist")
+		return fmt.Errorf("%w: email is exis", apperrors.ErrConflict)
 	}
 
 	var createUser entity.User
 	createUser.UserName = createRequest.UserName
 	createUser.Email = createRequest.Email
 	createUser.Password = HashPassword(createRequest.Password)
-	createUser.Status = true
+	createUser.Status = enums.UserStatusActive
 	createUser.Operator = createRequest.UserName
 
-	err := s.DB.Model(&entity.User{}).Create(&createUser).Error
-	if err != nil {
-		fmt.Println(err)
+	result = s.db.Model(&entity.User{}).Create(&createUser)
+	if result.Error != nil {
+		return fmt.Errorf("register user: %w", result.Error)
 	}
-
 	return nil
 }
 
-func (s *UserService) Update(updateRequest *request.UserUpdateRequest) error {
+func (s *UserService) Updated(updateRequest *request.UserUpdateRequest) error {
 
 	// 先查是否存在
 	var user entity.User
-	s.DB.Model(&entity.User{}).Where("id = ?", updateRequest.Id).Find(&user)
+	result := s.db.Model(&entity.User{}).Where("id = ?", updateRequest.Id).Find(&user)
 
-	if &user == nil || user.ID == 0 {
-		return errors.New("user does not exist")
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
-
+	if enums.UserStatusActive != user.Status {
+		return fmt.Errorf("%w: user status is not active", apperrors.ErrGone)
+	}
 	//user.ID = updateRequest.Id
 	user.UserName = updateRequest.UserName
 	user.Email = updateRequest.Email
 	user.Password = HashPassword(updateRequest.Password)
 
-	s.DB.Model(&user).
+	result = s.db.Model(&user).
 		UpdateColumns(map[string]any{
 			"user_name": user.UserName,
 			"password":  user.Password,
 			"email":     user.Email,
 		})
+	if result.Error != nil {
+		return fmt.Errorf("update user: %w", result.Error)
+	}
 	return nil
 }
 
-func (s *UserService) Delete(deletedRequest *request.UserDeletedRequest) error {
+func (s *UserService) Deleted(deletedRequest *request.UserDeletedRequest) error {
 	// 先查是否存在
 	var user entity.User
-	s.DB.Model(&entity.User{}).Where("id = ?", deletedRequest.Id).Find(&user)
+	result := s.db.Model(&entity.User{}).Where("id = ?", deletedRequest.Id).Find(&user)
 
-	if &user == nil || user.ID == 0 {
-		return errors.New("user not exist")
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) || &user == nil || user.Id == 0 {
+		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
 
 	if deletedRequest.Operator != user.UserName {
-		return errors.New("deleting other people's accounts is not permitted")
+		return fmt.Errorf("%w: accounts is not permitted", apperrors.ErrForbidden)
 	}
 
 	if user.UserName != deletedRequest.UserName {
-		return errors.New("input userName is no match")
+		return fmt.Errorf("%w: input userName is no match", apperrors.ErrConflict)
 	}
 
-	s.DB.Model(&user).
-		//Where("id = ?", deletedRequest.Id).
-		Delete(&entity.User{})
-
+	result = s.db.Model(&entity.User{}).
+		Where("id = ?", deletedRequest.Id).
+		UpdateColumn("status", enums.UserStatusCancelled)
+	if result.Error != nil {
+		return fmt.Errorf("delete user: %w", result.Error)
+	}
 	return nil
 }

@@ -1,4 +1,4 @@
-// middleware/auth.go
+// middleware/auth_handler.go
 package middleware
 
 import (

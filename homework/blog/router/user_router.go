@@ -15,16 +15,16 @@ import (
 func RegisterUserRouter(engine *gin.Engine, db *gorm.DB) {
 
 	userService := service.NewUserService(db)
-	engine.POST("/user/register", handleRegister(userService))
+	engine.POST("/user/register", handleUserRegister(userService))
 
 	loginGroup := engine.Group("/user")
 	loginGroup.Use(middleware.RequireLogin())
 	{
 		loginGroup.GET("/info", handleUserInfo(userService))
 
-		loginGroup.POST("/update", handleUpdate(userService))
+		loginGroup.POST("/updated", handleUserUpdated(userService))
 
-		loginGroup.DELETE("/delete", handleDelete(userService))
+		loginGroup.DELETE("/deleted", handleUserDeleted(userService))
 	}
 
 }
@@ -33,15 +33,12 @@ func handleUserInfo(userService *service.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Query("id"))
 		if err != nil || id <= 0 {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "id 必须是正整数",
-			})
+			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, "id must be a positive integer"))
 			return
 		}
-
 		userInfo, err := userService.UserInfoById(&id)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 
@@ -52,12 +49,12 @@ func handleUserInfo(userService *service.UserService) gin.HandlerFunc {
 	}
 }
 
-func handleRegister(userService *service.UserService) gin.HandlerFunc {
+func handleUserRegister(userService *service.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var createRequest request.UserCreateRequest
 		err := c.ShouldBindJSON(&createRequest)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 
@@ -65,19 +62,19 @@ func handleRegister(userService *service.UserService) gin.HandlerFunc {
 		err = userService.Register(&createRequest)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 		c.JSON(http.StatusOK, response.Success(""))
 	}
 }
 
-func handleUpdate(userService *service.UserService) gin.HandlerFunc {
+func handleUserUpdated(userService *service.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var updateRequest request.UserUpdateRequest
 		err := c.ShouldBindJSON(&updateRequest)
 		if err != nil {
-			c.JSON(http.StatusOK, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 
@@ -85,29 +82,34 @@ func handleUpdate(userService *service.UserService) gin.HandlerFunc {
 
 		updateRequest.Operator = name
 
-		err = userService.Update(&updateRequest)
+		err = userService.Updated(&updateRequest)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
+			return
 		}
 		c.JSON(http.StatusOK, response.Success(""))
 		return
 	}
 }
 
-func handleDelete(userService *service.UserService) gin.HandlerFunc {
+func handleUserDeleted(userService *service.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var deletedRequest request.UserDeletedRequest
 		err := c.ShouldBindJSON(&deletedRequest)
 		if err != nil {
-			c.JSON(http.StatusOK, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 
-		err = userService.Delete(&deletedRequest)
+		name, _ := middleware.CurrentUserName(c)
+		deletedRequest.Operator = name
+
+		err = userService.Deleted(&deletedRequest)
 		if err != nil {
-			c.JSON(http.StatusOK, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
+
 		c.JSON(http.StatusOK, response.Success(""))
 		return
 	}

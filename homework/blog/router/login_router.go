@@ -1,9 +1,9 @@
 package router
 
 import (
+	apperrors "blog/errors"
 	"blog/middleware"
 	"blog/request"
-	"blog/response"
 	"blog/service"
 	"fmt"
 	"net/http"
@@ -24,7 +24,9 @@ func RegisterLoginRouter(engine *gin.Engine, db *gorm.DB) {
 
 	loginGroup := engine.Group("")
 	loginGroup.Use(middleware.RequireLogin())
-	loginGroup.POST("/logout", handLogout())
+	{
+		loginGroup.POST("/logout", handLogout())
+	}
 
 }
 
@@ -33,16 +35,16 @@ func handLogin(loginService *service.LoginService) gin.HandlerFunc {
 		var loginRequest request.LoginRequest
 		err := c.ShouldBindJSON(&loginRequest)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 		login, err := loginService.VerifyPassword(&loginRequest)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
+			_ = c.Error(err)
 			return
 		}
 		if !login {
-			c.JSON(http.StatusUnauthorized, response.Fail(http.StatusUnauthorized, ""))
+			_ = c.Error(fmt.Errorf("%w: login error", apperrors.ErrBadRequest))
 			return
 		}
 
