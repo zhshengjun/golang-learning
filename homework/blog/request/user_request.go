@@ -4,6 +4,7 @@ type UserCreateRequest struct {
 	UserName string `json:"userName" binding:"required,gte=6"`
 	Password string `json:"password" binding:"required,gte=8"`
 	Email    string `json:"email" binding:"email"`
+	Operator string `json:"operator"`
 }
 
 type UserUpdateRequest struct {
@@ -11,11 +12,13 @@ type UserUpdateRequest struct {
 	UserName string `json:"UserName" binding:"required,gte=6"`
 	Password string `json:"password" binding:"required,gte=8"`
 	Email    string `json:"email" binding:"email"`
+	Operator string `json:"operator"`
 }
 
 type UserDeletedRequest struct {
 	Id       int64  `json:"id" binding:"required"`
 	UserName string `json:"UserName" binding:"required,gte=6"`
+	Operator string `json:"operator"`
 }
 
 type UserListRequest struct {
@@ -27,6 +30,12 @@ type UserListRequest struct {
 type UserResponse struct {
 	UserName string `json:"userName"`
 	Email    string `json:"email"`
+}
+
+type UserLoginVerifyResponse struct {
+	UserName string `json:"userName"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type UserListResponse struct {

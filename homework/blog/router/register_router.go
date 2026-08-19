@@ -6,5 +6,6 @@ import (
 )
 
 func Register(engine *gin.Engine, db *gorm.DB) {
+	RegisterLoginRouter(engine, db)
 	RegisterUserRouter(engine, db)
 }

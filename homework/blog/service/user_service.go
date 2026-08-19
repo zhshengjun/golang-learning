@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -39,7 +38,23 @@ func (s *UserService) UserInfoById(id *int) (request.UserResponse, error) {
 	return response, nil
 }
 
-func (s *UserService) Register(createRequest request.UserCreateRequest) error {
+func (s *UserService) UserPasswordByName(userName *string) (string, error) {
+
+	if userName == nil {
+		return "", nil
+	}
+	var user entity.User
+
+	s.DB.Model(entity.User{}).Where("user_name = ?", *userName).Find(&user)
+
+	if &user == nil || user.ID == 0 {
+		return "", errors.New("user not found")
+	}
+
+	return user.Password, nil
+}
+
+func (s *UserService) Register(createRequest *request.UserCreateRequest) error {
 	// 先查询用户名是否存在
 	var query entity.User
 	s.DB.Model(entity.User{}).Where("user_name = ?", createRequest.UserName).Find(&query)
@@ -57,9 +72,9 @@ func (s *UserService) Register(createRequest request.UserCreateRequest) error {
 	var createUser entity.User
 	createUser.UserName = createRequest.UserName
 	createUser.Email = createRequest.Email
-	createUser.Password = createRequest.Password
-	createUser.CreateAt = time.Now()
-	createUser.UpdateAt = time.Now()
+	createUser.Password = HashPassword(createRequest.Password)
+	createUser.Status = true
+	createUser.Operator = createRequest.UserName
 
 	err := s.DB.Model(&entity.User{}).Create(&createUser).Error
 	if err != nil {
@@ -69,37 +84,41 @@ func (s *UserService) Register(createRequest request.UserCreateRequest) error {
 	return nil
 }
 
-func (s *UserService) Update(updateRequest request.UserUpdateRequest) error {
+func (s *UserService) Update(updateRequest *request.UserUpdateRequest) error {
 
 	// 先查是否存在
 	var user entity.User
 	s.DB.Model(&entity.User{}).Where("id = ?", updateRequest.Id).Find(&user)
 
 	if &user == nil || user.ID == 0 {
-		return errors.New("user id is exist")
+		return errors.New("user does not exist")
 	}
 
 	//user.ID = updateRequest.Id
 	user.UserName = updateRequest.UserName
 	user.Email = updateRequest.Email
-	user.Password = updateRequest.Password
+	user.Password = HashPassword(updateRequest.Password)
 
 	s.DB.Model(&user).
 		UpdateColumns(map[string]any{
-			"user_name": updateRequest.UserName,
-			"password":  updateRequest.Password,
-			"email":     updateRequest.Email,
+			"user_name": user.UserName,
+			"password":  user.Password,
+			"email":     user.Email,
 		})
 	return nil
 }
 
-func (s *UserService) Delete(deletedRequest request.UserDeletedRequest) error {
+func (s *UserService) Delete(deletedRequest *request.UserDeletedRequest) error {
 	// 先查是否存在
 	var user entity.User
 	s.DB.Model(&entity.User{}).Where("id = ?", deletedRequest.Id).Find(&user)
 
 	if &user == nil || user.ID == 0 {
-		return errors.New("user id is exist")
+		return errors.New("user not exist")
+	}
+
+	if deletedRequest.Operator != user.UserName {
+		return errors.New("deleting other people's accounts is not permitted")
 	}
 
 	if user.UserName != deletedRequest.UserName {

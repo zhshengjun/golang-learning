@@ -1,6 +1,7 @@
 package router
 
 import (
+	"blog/middleware"
 	"blog/request"
 	"blog/response"
 	"blog/service"
@@ -14,16 +15,16 @@ import (
 func RegisterUserRouter(engine *gin.Engine, db *gorm.DB) {
 
 	userService := service.NewUserService(db)
+	engine.POST("/user/register", handleRegister(userService))
 
-	userGroup := engine.Group("/user")
+	loginGroup := engine.Group("/user")
+	loginGroup.Use(middleware.RequireLogin())
 	{
-		userGroup.GET("/info", handleUserInfo(userService))
+		loginGroup.GET("/info", handleUserInfo(userService))
 
-		userGroup.POST("/register", handleRegister(userService))
+		loginGroup.POST("/update", handleUpdate(userService))
 
-		userGroup.POST("/update", handleUpdate(userService))
-
-		userGroup.DELETE("/delete", handleDelete(userService))
+		loginGroup.DELETE("/delete", handleDelete(userService))
 	}
 
 }
@@ -61,7 +62,7 @@ func handleRegister(userService *service.UserService) gin.HandlerFunc {
 		}
 
 		// 这里还需要做一些校验，比如用户名是否重复，是否有特殊字符等，这里是不是重点
-		err = userService.Register(createRequest)
+		err = userService.Register(&createRequest)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
@@ -80,7 +81,11 @@ func handleUpdate(userService *service.UserService) gin.HandlerFunc {
 			return
 		}
 
-		err = userService.Update(updateRequest)
+		name, _ := middleware.CurrentUserName(c)
+
+		updateRequest.Operator = name
+
+		err = userService.Update(&updateRequest)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, err.Error()))
 		}
@@ -98,7 +103,7 @@ func handleDelete(userService *service.UserService) gin.HandlerFunc {
 			return
 		}
 
-		err = userService.Delete(deletedRequest)
+		err = userService.Delete(&deletedRequest)
 		if err != nil {
 			c.JSON(http.StatusOK, response.Fail(http.StatusBadRequest, err.Error()))
 			return
