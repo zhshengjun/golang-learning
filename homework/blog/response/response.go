@@ -12,6 +12,12 @@ type Response struct {
 	Data    any    `json:"data"`
 }
 
+type PageResponse[T any] struct {
+	Total int `json:"total"`
+	Pages int `json:"pages"`
+	List  []T `json:"list"`
+}
+
 func Success(data any) gin.H {
 	return gin.H{
 		"code":    http.StatusOK,

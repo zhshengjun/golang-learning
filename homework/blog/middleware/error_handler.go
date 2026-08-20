@@ -4,6 +4,7 @@ import (
 	blogerrors "blog/errors"
 	"blog/response"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -19,6 +20,7 @@ func ErrorHandler() gin.HandlerFunc {
 		}
 
 		err := c.Errors.Last().Err
+		fmt.Println(err)
 		status, message := statusOf(err)
 
 		if status >= 500 {

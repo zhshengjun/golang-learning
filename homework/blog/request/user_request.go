@@ -8,14 +8,14 @@ type UserCreateRequest struct {
 }
 
 type UserUpdateRequest struct {
-	Id       int64  `json:"id" binding:"required"`
+	Id       int    `json:"id" binding:"required"`
 	Password string `json:"password" binding:"required,gte=8,lte=32"`
 	Email    string `json:"email" binding:"email"`
 	Operator string `json:"operator"`
 }
 
 type UserDeletedRequest struct {
-	Id       int64  `json:"id" binding:"required"`
+	Id       int    `json:"id" binding:"required"`
 	UserName string `json:"UserName" binding:"required,gte=6"`
 	Operator string `json:"operator"`
 }

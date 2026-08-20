@@ -8,6 +8,7 @@ import (
 	"blog/service"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -27,6 +28,10 @@ func RegisterArticleRouter(engine *gin.Engine, db *gorm.DB) {
 		articleGroup.PUT("/published", handleArticlePublished(articleService))
 
 		articleGroup.DELETE("/deleted", handleArticleDeleted(articleService))
+
+		articleGroup.GET("/info", handleArticleInfo(articleService))
+
+		articleGroup.GET("/page", handleArticlePage(articleService))
 	}
 
 }
@@ -121,5 +126,40 @@ func handleArticleDeleted(articleService *service.ArticleService) gin.HandlerFun
 
 		c.JSON(http.StatusOK, response.Success(""))
 		return
+	}
+}
+
+func handleArticleInfo(articleService *service.ArticleService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Query("id"))
+		if err != nil || id <= 0 {
+			c.JSON(http.StatusBadRequest, response.Fail(http.StatusBadRequest, "id must be a positive integer"))
+			return
+		}
+		articleInfo, err := articleService.ArticleInfo(&id)
+		if err != nil {
+			_ = c.Error(err)
+			return
+		}
+
+		c.JSON(http.StatusOK, response.Success(articleInfo))
+	}
+}
+
+func handleArticlePage(articleService *service.ArticleService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		articleListRequest := request.ArticleListRequest{CurrentPage: 1, PageSize: 10}
+		err := c.ShouldBindQuery(&articleListRequest)
+		if err != nil {
+			_ = c.Error(fmt.Errorf("%w: param analysis error", blogerrors.ErrBadRequest))
+		}
+		name, _ := middleware.CurrentUserName(c)
+		articleListRequest.Author = name
+		articleInfo, err := articleService.ArticlePageList(&articleListRequest)
+		if err != nil {
+			_ = c.Error(err)
+			return
+		}
+		c.JSON(http.StatusOK, response.Success(articleInfo))
 	}
 }

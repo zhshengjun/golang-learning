@@ -7,9 +7,9 @@ import (
 )
 
 type Comment struct {
-	Id        int64     `json:"id" gorm:"primary_key"`
-	ArticleId int64     `json:"articleId" gorm:"index;column:article_id"`
-	AnswerId  int64     `json:"answerId" gorm:"index;column:answer_id"` // 回复的ID
+	Id        int       `json:"id" gorm:"primary_key"`
+	ArticleId int       `json:"articleId" gorm:"index;column:article_id"`
+	AnswerId  int       `json:"answerId" gorm:"index;column:answer_id"` // 回复的ID
 	Comment   string    `json:"comment"`
 	Status    bool      `json:"status" gorm:"column:status"`
 	Creator   string    `json:"creator"`

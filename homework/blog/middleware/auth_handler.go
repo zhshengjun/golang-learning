@@ -20,7 +20,7 @@ func RequireLogin() gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithStatusJSON(
 				http.StatusUnauthorized,
-				response.Fail(http.StatusUnauthorized, "please log in first"),
+				response.Fail(http.StatusUnauthorized, "please login first"),
 			)
 			return
 		}

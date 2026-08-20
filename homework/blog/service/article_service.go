@@ -3,8 +3,9 @@ package service
 import (
 	"blog/entity"
 	"blog/enums"
-	apperrors "blog/errors"
+	blogerrors "blog/errors"
 	"blog/request"
+	"blog/response"
 	"errors"
 	"fmt"
 
@@ -21,6 +22,13 @@ func NewArticleService(db *gorm.DB) *ArticleService {
 
 func (s *ArticleService) Created(createRequest *request.ArticleCreateRequest) error {
 
+	var user entity.User
+	result := s.db.Model(&entity.User{}).Where("user_name = ? and certificated = true", createRequest.Author).Find(&user)
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("%w: authot not  certificated", blogerrors.ErrForbidden)
+	}
+
 	var article entity.Article
 
 	article.Content = createRequest.Content
@@ -30,7 +38,7 @@ func (s *ArticleService) Created(createRequest *request.ArticleCreateRequest) er
 	article.CommentStatus = false
 	article.Operator = createRequest.Author
 
-	result := s.db.Model(&article).Create(&article)
+	result = s.db.Model(&entity.Article{}).Create(&article)
 
 	if result.Error != nil {
 		return fmt.Errorf("%w: create article error", result.Error)
@@ -47,9 +55,9 @@ func (s *ArticleService) Updated(updateRequest *request.ArticleUpdateRequest) er
 		return err
 	}
 
-	article.Id = updateRequest.Id
-	article.Title = updateRequest.Title
-	article.Content = updateRequest.Content
+	if article.Status == enums.ArticleStatusDeleted {
+		return fmt.Errorf("%w:  article has deleted", blogerrors.ErrGone)
+	}
 
 	result := s.db.Model(&entity.Article{}).
 		Where("id = ?", updateRequest.Id).
@@ -72,9 +80,7 @@ func (s *ArticleService) Published(publishedRequest *request.ArticlePublishedReq
 		return err
 	}
 
-	article.Id = publishedRequest.Id
-
-	result := s.db.Model(&entity.Article{}).
+	result := s.db.Model(&article).
 		Where("id = ?", publishedRequest.Id).
 		Update("status", enums.ArticleStatusPublished)
 
@@ -101,7 +107,7 @@ func (s *ArticleService) Deleted(deletedRequest *request.ArticleDeleteRequest) e
 	return nil
 }
 
-func (s *ArticleService) UpdateComment(articleId *int64) error {
+func (s *ArticleService) UpdateArticleComment(articleId *int) error {
 	_, err := checkArticle(s, *articleId, nil)
 	if err != nil {
 		return err
@@ -128,23 +134,57 @@ func (s *ArticleService) UpdateComment(articleId *int64) error {
 	return nil
 }
 
-func checkArticle(s *ArticleService, id int64, operator *string) (entity.Article, error) {
+func (s *ArticleService) ArticleInfo(articleId *int) (entity.Article, error) {
+	article, err := checkArticle(s, *articleId, nil)
+	if err != nil {
+		return entity.Article{}, err
+	}
+	return *article, nil
+}
+
+func (s *ArticleService) ArticlePageList(articleListRequest *request.ArticleListRequest) (*response.PageResponse[entity.Article], error) {
+
+	var total int64
+	if err := s.db.Model(&entity.Article{}).Where("author = ? and status != 'DELETED'", articleListRequest.Author).Count(&total).Error; err != nil {
+		return nil, fmt.Errorf("%w: query articles error", err)
+	}
+	responseArticle := &response.PageResponse[entity.Article]{
+		Total: int(total),
+		Pages: Pages(int(total), articleListRequest.PageSize),
+	}
+
+	var articles []entity.Article
+	if err := s.db.Model(&entity.Article{}).Scopes(Paginate(articleListRequest.CurrentPage, articleListRequest.PageSize)).
+		Where("author = ? and status != 'DELETED'", articleListRequest.Author).
+		Find(&articles).Error; err != nil {
+		return nil, fmt.Errorf("%w: query articles error", err)
+	}
+	responseArticle.List = articles
+
+	return responseArticle, nil
+
+}
+
+func checkArticle(s *ArticleService, id int, operator *string) (*entity.Article, error) {
 	var article entity.Article
 
-	result := s.db.Model(&entity.Article{}).
-		Where("id = ?", id).First(&article)
+	result := s.db.Model(&entity.Article{}).Where("id = ?", id).First(&article)
 	if &article == nil || article.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return entity.Article{}, fmt.Errorf("%w: article not found", apperrors.ErrNotFound)
+		return nil, fmt.Errorf("%w: article not found", blogerrors.ErrNotFound)
 	}
 
 	if result.Error != nil {
-		return entity.Article{}, fmt.Errorf("%w: article error", result.Error)
+		return nil, fmt.Errorf("%w: article query error", result.Error)
+	}
+
+	if article.Status == enums.ArticleStatusDeleted {
+		return nil, fmt.Errorf("%w:  article is deleted", blogerrors.ErrGone)
 	}
 
 	if operator != nil {
 		if article.Author != *operator {
-			return entity.Article{}, fmt.Errorf("%w: update article permission denied", apperrors.ErrForbidden)
+			return nil, fmt.Errorf("%w: update article permission denied", blogerrors.ErrForbidden)
 		}
 	}
-	return article, nil
+	return &article, nil
 }

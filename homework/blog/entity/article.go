@@ -8,7 +8,7 @@ import (
 )
 
 type Article struct {
-	Id            int64               `json:"id" gorm:"primary_key"`
+	Id            int                 `json:"id" gorm:"primary_key"`
 	Title         string              `json:"title"`
 	Content       string              `json:"content"`
 	Author        string              `json:"author" gorm:"column:author;index"`

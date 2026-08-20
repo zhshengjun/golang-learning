@@ -7,7 +7,6 @@ import (
 	"blog/request"
 	"errors"
 	"fmt"
-	"log"
 
 	"gorm.io/gorm"
 )
@@ -71,7 +70,6 @@ func (s *UserService) Register(createRequest *request.UserCreateRequest) error {
 		return fmt.Errorf("query user: %w", result.Error)
 	}
 	if query.UserName != "" {
-		log.Println("user name is exist")
 		return fmt.Errorf("%w: user name is exist", apperrors.ErrConflict)
 	}
 
@@ -81,7 +79,6 @@ func (s *UserService) Register(createRequest *request.UserCreateRequest) error {
 	}
 
 	if query.Email != "" {
-		log.Println("email is exist")
 		return fmt.Errorf("%w: email is exis", apperrors.ErrConflict)
 	}
 
