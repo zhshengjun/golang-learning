@@ -113,33 +113,6 @@ func (s *ArticleService) Deleted(deletedRequest *request.ArticleDeleteRequest) e
 	return nil
 }
 
-func (s *ArticleService) UpdateArticleComment(articleId *int) error {
-	_, err := checkArticle(s, *articleId, nil)
-	if err != nil {
-		return err
-	}
-
-	var commentCount int64
-	result := s.db.Model(&entity.Comment{}).Where("article_id = ? and status = 0", articleId).Count(&commentCount)
-
-	if result.Error != nil {
-		return fmt.Errorf("%w: update comment error", result.Error)
-	}
-
-	if commentCount > 0 {
-		result := s.db.Model(&entity.Article{}).
-			Where("id = ?", articleId).
-			UpdateColumns(map[string]any{
-				"comment_count":  commentCount,
-				"comment_status": true,
-			})
-		if result.Error != nil {
-			return fmt.Errorf("%w: update comment error", result.Error)
-		}
-	}
-	return nil
-}
-
 func (s *ArticleService) ArticleInfo(articleId *int) (entity.Article, error) {
 	article, err := checkArticle(s, *articleId, nil)
 	if err != nil {
