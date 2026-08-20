@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="feat：文章的管理" />
+    <list default="true" id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="feat：文章的管理">
+      <change beforePath="$PROJECT_DIR$/homework/blog/request/article_request.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/request/article_request.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/service/article_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/article_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/service/comment_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/comment_service.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,61 +58,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000004087677" />
-      <entry key="S2" value="1.004496443325499" />
-      <entry key="S5" value="1.1151191733602368" />
-      <entry key="S10" value="1.3393716676232623" />
-      <entry key="S30" value="1.7691973952963946" />
-      <entry key="S60" value="2.285030444629741" />
-      <entry key="M2" value="3.3724124148361554" />
-      <entry key="M5" value="8.032266770181074" />
-      <entry key="M10" value="17.82500239006114" />
-      <entry key="M15" value="27.704460915702043" />
-      <entry key="M30" value="60.79852305806253" />
-      <entry key="H1" value="122.15406217467981" />
-      <entry key="H2" value="196.54860121211576" />
-      <entry key="H4" value="303.0489230450071" />
-      <entry key="D1" value="1371.548310427974" />
-      <entry key="W1" value="3144.8560250649407" />
+      <entry key="MS100" value="1.0000816606173575" />
+      <entry key="MS500" value="1.152195752333083" />
+      <entry key="S2" value="1.625274869298891" />
+      <entry key="S5" value="1.8834318819679818" />
+      <entry key="S10" value="2.189918021965283" />
+      <entry key="S30" value="3.6325252262072114" />
+      <entry key="S60" value="6.256553930079296" />
+      <entry key="M2" value="10.560612013421737" />
+      <entry key="M5" value="19.07788846649036" />
+      <entry key="M10" value="30.289619820268488" />
+      <entry key="M15" value="40.714323801936175" />
+      <entry key="M30" value="73.79380937775184" />
+      <entry key="H1" value="135.57635928430656" />
+      <entry key="H2" value="212.52373760225203" />
+      <entry key="H4" value="321.37798836872497" />
+      <entry key="D1" value="1391.8683211913049" />
+      <entry key="W1" value="3169.000878229465" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="3.0130561868407784E-122" />
-      <entry key="S2" value="4.16631217293505E-31" />
-      <entry key="S5" value="7.045323885719686E-13" />
-      <entry key="S10" value="8.399881892680476E-7" />
-      <entry key="S30" value="0.01028818896771288" />
-      <entry key="S60" value="0.1271220941201149" />
-      <entry key="M2" value="0.5113073023640908" />
-      <entry key="M5" value="1.5925149003967978" />
-      <entry key="M10" value="3.5092657443625734" />
-      <entry key="M15" value="5.367751654401409" />
-      <entry key="M30" value="11.005325141434733" />
-      <entry key="H1" value="21.594867135609732" />
-      <entry key="H2" value="35.34010471375418" />
-      <entry key="H4" value="58.288836144996566" />
-      <entry key="D1" value="315.83194203405367" />
-      <entry key="W1" value="705.068854472073" />
+      <entry key="MS100" value="3.2170747278093714E-226" />
+      <entry key="MS500" value="8.121211718922917E-46" />
+      <entry key="S2" value="7.283376508411881E-12" />
+      <entry key="S5" value="5.2017145357843174E-5" />
+      <entry key="S10" value="0.010826513655671794" />
+      <entry key="S30" value="0.543941363595182" />
+      <entry key="S60" value="1.8533897291513406" />
+      <entry key="M2" value="3.749843735995744" />
+      <entry key="M5" value="6.33004894879607" />
+      <entry key="M10" value="8.767903194591259" />
+      <entry key="M15" value="10.811672087242375" />
+      <entry key="M30" value="16.618659219257943" />
+      <entry key="H1" value="27.353843050589106" />
+      <entry key="H2" value="41.531403248968026" />
+      <entry key="H4" value="64.81403409745673" />
+      <entry key="D1" value="322.5259093781042" />
+      <entry key="W1" value="712.6531701541057" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9330329915368074" />
-      <entry key="MS500" value="0.9862327046368822" />
-      <entry key="S2" value="1.0000014915619848" />
-      <entry key="S5" value="1.1022939843860584" />
-      <entry key="S10" value="1.3213763964941319" />
-      <entry key="S30" value="1.765917735257534" />
-      <entry key="S60" value="2.400253978707027" />
-      <entry key="M2" value="3.8721641535053726" />
-      <entry key="M5" value="9.61185920259309" />
-      <entry key="M10" value="21.318434376001186" />
-      <entry key="M15" value="33.05514809606707" />
-      <entry key="M30" value="71.78467308250539" />
-      <entry key="H1" value="143.7289201013453" />
-      <entry key="H2" value="231.87188597554018" />
-      <entry key="H4" value="361.3238438025972" />
-      <entry key="D1" value="1687.36785759888" />
-      <entry key="W1" value="3849.9209374162638" />
+      <entry key="MS100" value="0.9727338263692337" />
+      <entry key="MS500" value="1.1456146281523953" />
+      <entry key="S2" value="1.6224549304972264" />
+      <entry key="S5" value="1.8683946386839185" />
+      <entry key="S10" value="2.1630756185138464" />
+      <entry key="S30" value="4.095341383729091" />
+      <entry key="S60" value="8.008595408816236" />
+      <entry key="M2" value="14.217005084250335" />
+      <entry key="M5" value="25.346063174996218" />
+      <entry key="M10" value="39.014369414989005" />
+      <entry key="M15" value="51.490121766287174" />
+      <entry key="M30" value="90.3837439775105" />
+      <entry key="H1" value="162.9053666998253" />
+      <entry key="H2" value="254.03572137949644" />
+      <entry key="H4" value="386.17672723451864" />
+      <entry key="D1" value="1714.3815980688141" />
+      <entry key="W1" value="3881.6500673098594" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -241,18 +245,6 @@
     ]
   }
 }]]></component>
-  <component name="QodanaHighlightedReportService">
-    <option name="localRunNotPublishedPersistedInfo">
-      <LocalReportPersistedInfo>
-        <option name="path" value="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output5/qodana.sarif.json" />
-        <option name="reportGuid" value="2e226656-6ad9-4802-b141-32028362ddce" />
-        <option name="reportName" value="golang-learning/qodana/2026-08-19" />
-      </LocalReportPersistedInfo>
-    </option>
-  </component>
-  <component name="QodanaIsSelectedPersistenceService">
-    <option name="selectedOrLoading" value="true" />
-  </component>
   <component name="QodanaReportsService">
     <option name="descriptions">
       <ReportDescription localRun="true" path="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output5/qodana.sarif.json" reportGuid="2e226656-6ad9-4802-b141-32028362ddce" reportId="golang-learning/qodana/2026-08-19" />
@@ -283,11 +275,9 @@
         <entry key="HttpClient.HttpRequestRunConfigurationType">
           <value>
             <map>
+              <entry key="article | 获取文章列表" value="STOPPED" />
               <entry key="comment | 创建评论" value="STOPPED" />
-              <entry key="comment | 删除评论" value="STOPPED" />
-              <entry key="comment | 查询评论" value="STOPPED" />
-              <entry key="comment | 获取文章列表" value="STOPPED" />
-              <entry key="comment | 获取评论列表" value="STOPPED" />
+              <entry key="login | 登录用户" value="STOPPED" />
             </map>
           </value>
         </entry>
@@ -346,7 +336,7 @@
       <auto_managed_config_id value="$PROJECT_DIR$/lesson03/hello-world" />
       <method v="2" />
     </configuration>
-    <configuration name="comment | 创建评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="创建评论" runType="运行单个请求">
+    <configuration name="article | 获取文章列表" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/article.http" executionIdentifier="获取文章列表" index="7" runType="运行单个请求">
       <method v="2" />
     </configuration>
     <configuration name="comment | 获取文章列表" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="获取文章列表" index="3" runType="运行单个请求">
@@ -361,7 +351,10 @@
     <configuration name="comment | 查询评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="查询评论" runType="运行单个请求">
       <method v="2" />
     </configuration>
-    <configuration name="user | 删除用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="删除用户" index="4" runType="运行单个请求">
+    <configuration name="comment | 创建评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="创建评论" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="login | 登录用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/login.http" executionIdentifier="登录用户" runType="运行单个请求">
       <method v="2" />
     </configuration>
     <configuration name="user | 查询用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="查询用户" runType="运行单个请求">
@@ -370,13 +363,14 @@
     <configuration name="user | 更新用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="更新用户" index="3" runType="运行单个请求">
       <method v="2" />
     </configuration>
+    <configuration name="user | 删除用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="删除用户" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="HTTP 请求.comment | 删除评论" />
-        <item itemvalue="HTTP 请求.comment | 获取评论列表" />
-        <item itemvalue="HTTP 请求.comment | 获取文章列表" />
+        <item itemvalue="HTTP 请求.article | 获取文章列表" />
+        <item itemvalue="HTTP 请求.login | 登录用户" />
         <item itemvalue="HTTP 请求.comment | 创建评论" />
-        <item itemvalue="HTTP 请求.comment | 查询评论" />
       </list>
     </recent_temporary>
   </component>
@@ -403,6 +397,7 @@
       <workItem from="1787012350851" duration="44295000" />
       <workItem from="1787112098797" duration="6864000" />
       <workItem from="1787119000048" duration="36655000" />
+      <workItem from="1787201655420" duration="533000" />
     </task>
     <task id="LOCAL-00001" summary="feat：基础知识提交">
       <option name="closed" value="true" />

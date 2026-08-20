@@ -66,6 +66,20 @@ func (s *CommentService) Deleted(deleteRequest *request.CommentDeleteRequest) er
 }
 
 func (s *CommentService) CommentList(articleId int) ([]entity.Comment, error) {
+
+	var article entity.Article
+	result := s.db.Model(&entity.Article{}).Where("id = ? and status !=", articleId, enums.ArticleStatusDeleted).First(&article)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("%w: article not found", blogerrors.ErrNotFound)
+		}
+		return nil, fmt.Errorf("%w: query article error", result.Error)
+	}
+	if article.Id == 0 {
+		return nil, fmt.Errorf("%w: article not found or deleted", blogerrors.ErrNotFound)
+	}
+
 	comments := make([]entity.Comment, 0)
 	if err := s.db.Model(&entity.Comment{}).
 		Where("article_id = ? AND status = ?", articleId, true).

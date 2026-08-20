@@ -99,13 +99,12 @@ func (s *ArticleService) Published(publishedRequest *request.ArticlePublishedReq
 }
 
 func (s *ArticleService) Deleted(deletedRequest *request.ArticleDeleteRequest) error {
-	_, err := checkArticle(s, deletedRequest.Id, &deletedRequest.Operator)
+	article, err := checkArticle(s, deletedRequest.Id, &deletedRequest.Operator)
 	if err != nil {
 		return err
 	}
 
-	result := s.db.Model(&entity.Article{}).
-		Where("id = ?", deletedRequest.Id).
+	result := s.db.Model(&article).
 		Update("status", enums.ArticleStatusDeleted)
 
 	if result.Error != nil {

@@ -25,6 +25,6 @@ type ArticleDeleteRequest struct {
 
 type ArticleListRequest struct {
 	Author      string `json:"author"`
-	CurrentPage int    `json:"currentPage" form:"currentPage"`
-	PageSize    int    `json:"pageSize" form:"pageSize"`
+	CurrentPage int    `json:"currentPage" form:"currentPage" binding:"gte=1"`
+	PageSize    int    `json:"pageSize" form:"pageSize"  binding:"gte=1"`
 }
