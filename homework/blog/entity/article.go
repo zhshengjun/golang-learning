@@ -24,7 +24,7 @@ func (a *Article) AfterUpdate(tx *gorm.DB) error {
 
 	var count int64
 	if err := tx.Model(&Article{}).
-		Where("author = ? AND status = 'PUBLISHED'", a.Author).
+		Where("author = ? AND status = ?", a.Author, enums.ArticleStatusPublished).
 		Count(&count).Error; err != nil {
 		return err
 	}

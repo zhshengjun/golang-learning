@@ -51,12 +51,17 @@ func (s *UserService) UserPasswordByName(userName *string) (string, error) {
 	}
 	var user entity.User
 
-	result := s.db.Model(entity.User{}).Where("user_name = ? and status = 'ACTIVE'", *userName).Find(&user)
-	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return "", fmt.Errorf("%w: userName not found", apperrors.ErrNotFound)
-	}
+	result := s.db.Model(entity.User{}).Where("user_name = ? and status = ?", *userName, enums.UserStatusActive).Find(&user)
+
 	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return "", fmt.Errorf("%w: userName not found", apperrors.ErrNotFound)
+		}
 		return "", fmt.Errorf("%w: query user errror", result.Error)
+	}
+
+	if user.Id == 0 {
+		return "", fmt.Errorf("%w: userName not found", apperrors.ErrNotFound)
 	}
 
 	return user.Password, nil
@@ -102,11 +107,15 @@ func (s *UserService) Updated(updateRequest *request.UserUpdateRequest) error {
 	var user entity.User
 	result := s.db.Model(&entity.User{}).Where("id = ?", updateRequest.Id).Find(&user)
 
-	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
-	}
 	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
+		}
 		return fmt.Errorf("update user: %w", result.Error)
+	}
+
+	if user.Id == 0 {
+		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
 
 	if updateRequest.Operator != user.UserName {
@@ -134,12 +143,15 @@ func (s *UserService) Deleted(deletedRequest *request.UserDeletedRequest) error 
 	var user entity.User
 	result := s.db.Model(&entity.User{}).Where("id = ?", deletedRequest.Id).Find(&user)
 
-	if &user == nil || user.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
+		}
+		return fmt.Errorf("delete user: %w", result.Error)
 	}
 
-	if result.Error != nil {
-		return fmt.Errorf("delete user: %w", result.Error)
+	if user.Id == 0 {
+		return fmt.Errorf("%w: user not found", apperrors.ErrNotFound)
 	}
 
 	if deletedRequest.Operator != user.UserName {

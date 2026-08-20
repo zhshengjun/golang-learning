@@ -1,0 +1,26 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": 1,
+      "articleId": 2,
+      "answerId": 0,
+      "comment": "这是评论内容",
+      "status": true,
+      "creator": "lisi01",
+      "createAt": "2026-08-20T10:36:37.643+08:00",
+      "updateAt": "2026-08-20T10:36:38+08:00"
+    },
+    {
+      "id": 2,
+      "articleId": 2,
+      "answerId": 1,
+      "comment": "这是评论内容",
+      "status": true,
+      "creator": "lisi01",
+      "createAt": "2026-08-20T10:37:25.065+08:00",
+      "updateAt": "2026-08-20T10:37:25+08:00"
+    }
+  ],
+  "message": "ok"
+}

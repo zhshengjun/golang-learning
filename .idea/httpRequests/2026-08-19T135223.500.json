@@ -1,0 +1,11 @@
+{
+  "code": 400,
+  "message": "user not found"
+}{
+  "code": 200,
+  "data": {
+    "userName": "",
+    "email": ""
+  },
+  "message": "ok"
+}

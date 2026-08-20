@@ -23,10 +23,17 @@ func NewArticleService(db *gorm.DB) *ArticleService {
 func (s *ArticleService) Created(createRequest *request.ArticleCreateRequest) error {
 
 	var user entity.User
-	result := s.db.Model(&entity.User{}).Where("user_name = ? and certificated = true", createRequest.Author).Find(&user)
+	result := s.db.Model(&entity.User{}).Where("user_name = ? and certificated = ?", createRequest.Author, true).Find(&user)
 
 	if result.RowsAffected == 0 {
-		return fmt.Errorf("%w: authot not  certificated", blogerrors.ErrForbidden)
+		return fmt.Errorf("%w: author not certificated or not exist", blogerrors.ErrForbidden)
+	}
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("%w: author not certificated", blogerrors.ErrNotFound)
+		}
+		return fmt.Errorf("%w: user query error", result.Error)
 	}
 
 	var article entity.Article
@@ -145,7 +152,7 @@ func (s *ArticleService) ArticleInfo(articleId *int) (entity.Article, error) {
 func (s *ArticleService) ArticlePageList(articleListRequest *request.ArticleListRequest) (*response.PageResponse[entity.Article], error) {
 
 	var total int64
-	if err := s.db.Model(&entity.Article{}).Where("author = ? and status != 'DELETED'", articleListRequest.Author).Count(&total).Error; err != nil {
+	if err := s.db.Model(&entity.Article{}).Where("author = ? and status != ?", articleListRequest.Author, enums.ArticleStatusDeleted).Count(&total).Error; err != nil {
 		return nil, fmt.Errorf("%w: query articles error", err)
 	}
 	responseArticle := &response.PageResponse[entity.Article]{
@@ -155,7 +162,7 @@ func (s *ArticleService) ArticlePageList(articleListRequest *request.ArticleList
 
 	var articles []entity.Article
 	if err := s.db.Model(&entity.Article{}).Scopes(Paginate(articleListRequest.CurrentPage, articleListRequest.PageSize)).
-		Where("author = ? and status != 'DELETED'", articleListRequest.Author).
+		Where("author = ? and status != ?", articleListRequest.Author, enums.ArticleStatusDeleted).
 		Find(&articles).Error; err != nil {
 		return nil, fmt.Errorf("%w: query articles error", err)
 	}
@@ -169,12 +176,16 @@ func checkArticle(s *ArticleService, id int, operator *string) (*entity.Article,
 	var article entity.Article
 
 	result := s.db.Model(&entity.Article{}).Where("id = ?", id).First(&article)
-	if &article == nil || article.Id == 0 || errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return nil, fmt.Errorf("%w: article not found", blogerrors.ErrNotFound)
-	}
 
 	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("%w: article not found", blogerrors.ErrNotFound)
+		}
 		return nil, fmt.Errorf("%w: article query error", result.Error)
+	}
+
+	if article.Id == 0 {
+		return nil, fmt.Errorf("%w: article not found", blogerrors.ErrNotFound)
 	}
 
 	if article.Status == enums.ArticleStatusDeleted {

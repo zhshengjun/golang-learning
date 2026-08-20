@@ -1,0 +1,4 @@
+{
+  "code": 400,
+  "message": "Key: 'UserDeletedRequest.UserName' Error:Field validation for 'UserName' failed on the 'required' tag"
+}

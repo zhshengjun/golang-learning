@@ -1,0 +1,9 @@
+{
+  "code": 200,
+  "data": {
+    "email": "stupidzhang@123.com",
+    "password": "12345678",
+    "username": "zhansan"
+  },
+  "message": "ok"
+}

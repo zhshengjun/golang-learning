@@ -1,6 +1,6 @@
-# Blog
+# Go Blog
 
-Go 博客后端学习项目，基于 Gin、GORM 和 MySQL，实现用户、登录和文章管理接口。
+Go 博客后端学习项目，基于 Gin、GORM 和 MySQL，实现登录、用户、文章和评论接口。
 
 ## 运行环境
 
@@ -72,16 +72,18 @@ go build -o blog .
 | POST | `/login` | 用户登录 |
 | POST | `/logout` | 退出登录，需要登录 |
 
+登录成功后，服务会通过 `blog_token` Cookie 保存 JWT；除注册和登录外的接口都需要登录。
+
 ## 用户管理接口
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
 | POST | `/user/register` | 用户注册 |
 | GET | `/user/info?id=1` | 查询用户信息，需要登录 |
-| POST | `/user/update` | 更新用户信息，需要登录 |
-| DELETE | `/user/delete` | 删除用户，需要登录 |
+| POST | `/user/updated` | 更新用户信息，需要登录 |
+| DELETE | `/user/deleted` | 删除用户，需要登录 |
 
-文章接口均需要登录：
+## 文章接口
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
@@ -89,6 +91,18 @@ go build -o blog .
 | PUT | `/article/updated` | 更新文章 |
 | PUT | `/article/published` | 发布文章 |
 | DELETE | `/article/deleted` | 删除文章 |
+| GET | `/article/info?id=1` | 查询文章详情 |
+| GET | `/article/page?currentPage=1&pageSize=10` | 分页查询当前用户的文章 |
+
+## 评论接口
+
+评论接口均需要登录：
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| POST | `/comment/created` | 创建评论或回复 |
+| DELETE | `/comment/deleted` | 删除评论及其回复 |
+| GET | `/comment/list?articleId=1` | 查询文章评论列表 |
 
 ## 检查项目
 

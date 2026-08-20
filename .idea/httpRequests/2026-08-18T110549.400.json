@@ -1,0 +1,7 @@
+{
+  "message": "Key: 'Register.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'Register.Password' Error:Field validation for 'Password' failed on the 'min' tag\nKey: 'Register.Age' Error:Field validation for 'Age' failed on the 'required' tag"
+}{
+  "email": "stupidzhang",
+  "password": "2",
+  "username": "zhansan"
+}

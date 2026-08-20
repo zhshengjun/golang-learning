@@ -1,0 +1,8 @@
+{
+  "code": 200,
+  "data": {
+    "userName": "lisi01",
+    "email": "1234567@163.com"
+  },
+  "message": "ok"
+}

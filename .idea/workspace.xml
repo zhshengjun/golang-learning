@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="feat：文章的管理">
+      <change afterPath="$PROJECT_DIR$/homework/blog/request/comment_request.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/homework/blog/router/comment_router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/homework/blog/service/comment_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/entity/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/entity/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/entity/comment.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/entity/comment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/router/register_router.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/router/register_router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/service/article_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/article_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homework/blog/service/user_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/user_service.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="455b1fc0-d843-4c56-89a3-604399fb8a54" value="" />
+    </colors>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+        <option value="HTTP Request" />
+        <option value="HTTP Private Environment File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///opt/homebrew/Cellar/go/1.26.5/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;zhshengjun&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:zhshengjun/golang-learning.git&quot;,
+    &quot;accountId&quot;: &quot;e211234e-d6fe-4aef-8cad-0a87182dae79&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/go/pkg/mod/gorm.io/gorm@v1.31.2/finisher_api.go" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="HttpClientSelectedEnvironments">
+    <file url="file://$APPLICATION_CONFIG_DIR$/extensions/user.http" environment="lisi" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/extensions/article.http" environment="lisi" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/extensions/comment.http" environment="lisi" />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000084653432622" />
+      <entry key="S2" value="1.0539400249829554" />
+      <entry key="S5" value="1.3110044675207417" />
+      <entry key="S10" value="1.5589230396781422" />
+      <entry key="S30" value="1.9341922921572696" />
+      <entry key="S60" value="2.3361674409483797" />
+      <entry key="M2" value="3.323705318491917" />
+      <entry key="M5" value="8.43531791106814" />
+      <entry key="M10" value="18.679865920194352" />
+      <entry key="M15" value="28.701439285396052" />
+      <entry key="M30" value="62.123711724826954" />
+      <entry key="H1" value="123.50162560083005" />
+      <entry key="H2" value="197.23916320343633" />
+      <entry key="H4" value="303.123080186544" />
+      <entry key="D1" value="1371.1160153178987" />
+      <entry key="W1" value="3143.369691134721" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="4.33228749501817E-179" />
+      <entry key="MS500" value="2.124924255076068E-36" />
+      <entry key="S2" value="1.20735744217909E-9" />
+      <entry key="S5" value="2.708535832930071E-4" />
+      <entry key="S10" value="0.01646986315976818" />
+      <entry key="S30" value="0.27742432386800303" />
+      <entry key="S60" value="0.6601214430505071" />
+      <entry key="M2" value="1.1651541763600248" />
+      <entry key="M5" value="2.2139309157579414" />
+      <entry key="M10" value="4.137676542436211" />
+      <entry key="M15" value="5.990815359532954" />
+      <entry key="M30" value="11.626517186913361" />
+      <entry key="H1" value="22.195959125976305" />
+      <entry key="H2" value="35.82857389286932" />
+      <entry key="H4" value="58.690286404075486" />
+      <entry key="D1" value="316.19344204229634" />
+      <entry key="W1" value="705.1840863954039" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="5.80667536622422E-4" />
+      <entry key="MS500" value="0.22532096445108754" />
+      <entry key="S2" value="0.7427171658328846" />
+      <entry key="S5" value="1.1723371464514862" />
+      <entry key="S10" value="1.5014856915556247" />
+      <entry key="S30" value="2.177221025114546" />
+      <entry key="S60" value="2.9727628902302516" />
+      <entry key="M2" value="4.471720654258016" />
+      <entry key="M5" value="10.633653248074438" />
+      <entry key="M10" value="22.7998965420381" />
+      <entry key="M15" value="34.673859035873015" />
+      <entry key="M30" value="73.73028079360795" />
+      <entry key="H1" value="145.67716949750331" />
+      <entry key="H2" value="233.05075921306997" />
+      <entry key="H4" value="361.79939241328367" />
+      <entry key="D1" value="1687.2970544534237" />
+      <entry key="W1" value="3848.549835641976" />
+    </decayedShown>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3HsvDVJxzZShWtXZTpPfxng0wIO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "Go 构建.go build Pointer.go.executor": "Run",
+    "Go 构建.go build SELECT.go.executor": "Run",
+    "Go 构建.go build atomic.go.executor": "Run",
+    "Go 构建.go build blog.executor": "Debug",
+    "Go 构建.go build channel.go.executor": "Run",
+    "Go 构建.go build closure.go.executor": "Run",
+    "Go 构建.go build condition.go.executor": "Run",
+    "Go 构建.go build config.executor": "Run",
+    "Go 构建.go build database.executor": "Debug",
+    "Go 构建.go build defer.go.executor": "Run",
+    "Go 构建.go build funcation.go.executor": "Run",
+    "Go 构建.go build goroutine.go.executor": "Run",
+    "Go 构建.go build hello-world.executor": "Run",
+    "Go 构建.go build interface.go.executor": "Run",
+    "Go 构建.go build is_palindrome.go.executor": "Debug",
+    "Go 构建.go build longest_commonPrefix.go.executor": "Run",
+    "Go 构建.go build main.go (1).executor": "Run",
+    "Go 构建.go build main.go.executor": "Debug",
+    "Go 构建.go build mutex.go.executor": "Run",
+    "Go 构建.go build panic.go.executor": "Run",
+    "Go 构建.go build plus_one.go.executor": "Run",
+    "Go 构建.go build pointer.go.executor": "Run",
+    "Go 构建.go build ranage.go.executor": "Run",
+    "Go 构建.go build reference.go.executor": "Run",
+    "Go 构建.go build remove_duplicates.go.executor": "Run",
+    "Go 构建.go build select.go.executor": "Run",
+    "Go 构建.go build shape.go.executor": "Run",
+    "Go 构建.go build single_number.go.executor": "Run",
+    "Go 构建.go build slice.go.executor": "Run",
+    "Go 构建.go build struct.go.executor": "Run",
+    "Go 构建.go build task.go.executor": "Run",
+    "Go 构建.go build two_sum.go.executor": "Run",
+    "Go 构建.go build valid_parentheses.go.executor": "Run",
+    "Go 测试.TestDemo.executor": "Run",
+    "Go 测试.database/advanced 中的 TestAssociations.executor": "Run",
+    "Go 测试.database/advanced 中的 TestCreateProduct.executor": "Run",
+    "Go 测试.database/advanced 中的 TestCreateRole.executor": "Run",
+    "Go 测试.database/advanced 中的 TestCreateUser.executor": "Run",
+    "Go 测试.database/advanced 中的 TestMigrate.executor": "Run",
+    "Go 测试.database/advanced 中的 TestMigrateAssociation.executor": "Run",
+    "Go 测试.database/advanced 中的 TestQueryUser.executor": "Run",
+    "Go 测试.database/advanced 中的 TestSaveUser.executor": "Run",
+    "Go 测试.database/advanced 中的 TestUser.executor": "Run",
+    "Go 测试.database/basiced 中的 TestGroup.executor": "Run",
+    "Go 测试.database/basiced 中的 TestMigrate.executor": "Run",
+    "Go 测试.database/basiced 中的 TestQuery.executor": "Run",
+    "Go 测试.database/basiced/operator 中的 TestDelete.executor": "Run",
+    "Go 测试.database/basics/operator 中的 TestQueryFind.executor": "Run",
+    "Go 测试.database/operator 中的 TestGroup.executor": "Run",
+    "Go 测试.database/operator 中的 TestQueryFind.executor": "Run",
+    "Go 测试.database/operator 中的 TestQueryOffset.executor": "Run",
+    "Go 测试.database/operator 中的 TestScopes.executor": "Run",
+    "HTTP 请求.article | 修改文章#2.executor": "Run",
+    "HTTP 请求.article | 修改文章.executor": "Run",
+    "HTTP 请求.article | 创建文章.executor": "Run",
+    "HTTP 请求.article | 删除文章.executor": "Run",
+    "HTTP 请求.article | 发布文章.executor": "Run",
+    "HTTP 请求.article | 查询文章详情.executor": "Run",
+    "HTTP 请求.article | 获取文章列表.executor": "Run",
+    "HTTP 请求.article | 获取文章详情.executor": "Run",
+    "HTTP 请求.comment | 创建评论.executor": "Run",
+    "HTTP 请求.comment | 删除评论.executor": "Run",
+    "HTTP 请求.comment | 查询评论.executor": "Run",
+    "HTTP 请求.comment | 获取文章列表.executor": "Run",
+    "HTTP 请求.comment | 获取评论列表.executor": "Run",
+    "HTTP 请求.login | 登录用户.executor": "Run",
+    "HTTP 请求.request | #1.executor": "Run",
+    "HTTP 请求.request | #2.executor": "Run",
+    "HTTP 请求.request | #3.executor": "Run",
+    "HTTP 请求.request | #4.executor": "Run",
+    "HTTP 请求.request | #5.executor": "Run",
+    "HTTP 请求.request | #6.executor": "Run",
+    "HTTP 请求.request | #7.executor": "Run",
+    "HTTP 请求.request | #8.executor": "Run",
+    "HTTP 请求.request | #9.executor": "Run",
+    "HTTP 请求.request | GET request to example server.executor": "Run",
+    "HTTP 请求.request | 查询用户.executor": "Run",
+    "HTTP 请求.request | 注册用户.executor": "Run",
+    "HTTP 请求.user | 删除用户.executor": "Run",
+    "HTTP 请求.user | 更新.executor": "Run",
+    "HTTP 请求.user | 更新用户.executor": "Run",
+    "HTTP 请求.user | 查询用户.executor": "Run",
+    "HTTP 请求.user | 注册用户.executor": "Run",
+    "RunOnceActivity.GoLinterPluginOnboardingV2": "true",
+    "RunOnceActivity.GoLinterPluginStorageMigration": "true",
+    "RunOnceActivity.GoOptimizationToolWindowEnableInLayout.v333333": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.analysis.ui.options.defaults": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "go.sdk.automatically.set": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/zhangshengjun/Library/Application Support/JetBrains/GoLand2026.2/extensions",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "rest.client.default.execution.environment": "lisi",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="QodanaHighlightedReportService">
+    <option name="localRunNotPublishedPersistedInfo">
+      <LocalReportPersistedInfo>
+        <option name="path" value="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output5/qodana.sarif.json" />
+        <option name="reportGuid" value="2e226656-6ad9-4802-b141-32028362ddce" />
+        <option name="reportName" value="golang-learning/qodana/2026-08-19" />
+      </LocalReportPersistedInfo>
+    </option>
+  </component>
+  <component name="QodanaIsSelectedPersistenceService">
+    <option name="selectedOrLoading" value="true" />
+  </component>
+  <component name="QodanaReportsService">
+    <option name="descriptions">
+      <ReportDescription localRun="true" path="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output5/qodana.sarif.json" reportGuid="2e226656-6ad9-4802-b141-32028362ddce" reportId="golang-learning/qodana/2026-08-19" />
+      <ReportDescription localRun="true" path="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output2/qodana.sarif.json" reportGuid="ba422ada-d70e-4508-aaef-43e9f5a1de1a" reportId="golang-learning/qodana/2026-08-19" />
+      <ReportDescription localRun="true" path="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output1/qodana.sarif.json" reportGuid="690b1cdb-a26a-4250-a210-514225e55f8c" reportId="golang-learning/qodana/2026-08-19" />
+      <ReportDescription localRun="true" path="/private/var/folders/xh/qlmsdc1s4g38prlkjcnr2kj40000gn/T/qodana_output/qodana.sarif.json" reportGuid="fb4653bc-f614-4b7b-8f82-8f32173e482b" reportId="golang-learning/qodana/2026-08-19" />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$APPLICATION_CONFIG_DIR$/extensions" />
+      <recent name="$PROJECT_DIR$/homework/blog/router" />
+      <recent name="$PROJECT_DIR$/homework/blog/entity" />
+      <recent name="$PROJECT_DIR$/lesson03/mindleware" />
+      <recent name="$PROJECT_DIR$/lesson03" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/homework/blog/enums" />
+      <recent name="$PROJECT_DIR$/homework/blog/request" />
+      <recent name="$PROJECT_DIR$/homework/blog/response" />
+      <recent name="$PROJECT_DIR$/homework/blog/entity" />
+      <recent name="$PROJECT_DIR$/homework/blog" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <map>
+              <entry key="comment | 创建评论" value="STOPPED" />
+              <entry key="comment | 删除评论" value="STOPPED" />
+              <entry key="comment | 查询评论" value="STOPPED" />
+              <entry key="comment | 获取文章列表" value="STOPPED" />
+              <entry key="comment | 获取评论列表" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Go 构建.go build blog">
+    <configuration name="go build 01/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/homework/01" />
+      <auto_managed_config_id value="$PROJECT_DIR$/homework/01" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build 02/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/homework/02" />
+      <auto_managed_config_id value="$PROJECT_DIR$/homework/02" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build blog" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$/homework/blog" />
+      <kind value="PACKAGE" />
+      <package value="blog" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/homework/blog" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build config" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$/lesson03/config" />
+      <kind value="PACKAGE" />
+      <package value="config" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/lesson03/config" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build day01/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/lesson01/day01" />
+      <auto_managed_config_id value="$PROJECT_DIR$/lesson01/day01" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build hello-world" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="golang-learning" />
+      <working_directory value="$PROJECT_DIR$/lesson03/hello-world" />
+      <kind value="PACKAGE" />
+      <package value="hello-world" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/lesson03/hello-world" />
+      <method v="2" />
+    </configuration>
+    <configuration name="comment | 创建评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="创建评论" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="comment | 获取文章列表" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="获取文章列表" index="3" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="comment | 删除评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="删除评论" index="2" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="comment | 获取评论列表" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="获取评论列表" index="3" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="comment | 查询评论" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/comment.http" executionIdentifier="查询评论" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="user | 删除用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="删除用户" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="user | 查询用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="查询用户" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="user | 更新用户" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/extensions/user.http" executionIdentifier="更新用户" index="3" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP 请求.comment | 删除评论" />
+        <item itemvalue="HTTP 请求.comment | 获取评论列表" />
+        <item itemvalue="HTTP 请求.comment | 获取文章列表" />
+        <item itemvalue="HTTP 请求.comment | 创建评论" />
+        <item itemvalue="HTTP 请求.comment | 查询评论" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-63c95d513abe-9addb268e56c-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-262.9437.195" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-GO-262.9437.195" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="" />
+      <created>1786669471596</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1786669471596</updated>
+      <workItem from="1786669472636" duration="162000" />
+      <workItem from="1786669652688" duration="28000" />
+      <workItem from="1786669687041" duration="75335000" />
+      <workItem from="1786947767755" duration="2796000" />
+      <workItem from="1786950573079" duration="7260000" />
+      <workItem from="1787012350851" duration="44295000" />
+      <workItem from="1787112098797" duration="6864000" />
+      <workItem from="1787119000048" duration="34447000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat：基础知识提交">
+      <option name="closed" value="true" />
+      <created>1786702976457</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1786702976457</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat：协程">
+      <option name="closed" value="true" />
+      <created>1786839322916</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1786839322916</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat：database">
+      <option name="closed" value="true" />
+      <created>1786889629617</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1786889629617</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat：database">
+      <option name="closed" value="true" />
+      <created>1786890869575</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1786890869575</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat：crud 修改">
+      <option name="closed" value="true" />
+      <created>1786935365936</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1786935365936</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat：crud 修改2">
+      <option name="closed" value="true" />
+      <created>1786935900319</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1786935900319</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat：database api 提交">
+      <option name="closed" value="true" />
+      <created>1786954036246</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1786954036246</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat：homework">
+      <option name="closed" value="true" />
+      <created>1787052232042</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1787052232042</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat：homework">
+      <option name="closed" value="true" />
+      <created>1787055599623</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1787055599623</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat：homework">
+      <option name="closed" value="true" />
+      <created>1787058324616</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1787058324616</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat：homework">
+      <option name="closed" value="true" />
+      <created>1787058395937</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1787058395937</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat：homework">
+      <option name="closed" value="true" />
+      <created>1787062130878</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1787062130878</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feat：homework2">
+      <option name="closed" value="true" />
+      <created>1787062403481</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1787062403481</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat：homework2">
+      <option name="closed" value="true" />
+      <created>1787062549998</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1787062549998</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat：blog用户的增删改查">
+      <option name="closed" value="true" />
+      <created>1787118967393</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1787118967393</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat：登录拦截和校验">
+      <option name="closed" value="true" />
+      <created>1787128418322</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1787128418322</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat：文章的管理">
+      <option name="closed" value="true" />
+      <created>1787148426001</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1787148426001</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat：文章的管理">
+      <option name="closed" value="true" />
+      <created>1787148467372</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1787148467372</updated>
+    </task>
+    <task id="LOCAL-00019" summary="feat：异常管理">
+      <option name="closed" value="true" />
+      <created>1787149049704</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1787149049704</updated>
+    </task>
+    <task id="LOCAL-00020" summary="feat：异常管理">
+      <option name="closed" value="true" />
+      <created>1787151010019</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1787151010019</updated>
+    </task>
+    <task id="LOCAL-00021" summary="feat：异常管理">
+      <option name="closed" value="true" />
+      <created>1787151280273</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1787151280273</updated>
+    </task>
+    <task id="LOCAL-00022" summary="feat：异常管理">
+      <option name="closed" value="true" />
+      <created>1787151749157</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1787151749157</updated>
+    </task>
+    <task id="LOCAL-00023" summary="feat：文章的管理">
+      <option name="closed" value="true" />
+      <created>1787191730042</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1787191730042</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat：基础知识提交" />
+    <MESSAGE value="feat：协程" />
+    <MESSAGE value="feat：database" />
+    <MESSAGE value="feat：crud 修改" />
+    <MESSAGE value="feat：crud 修改2" />
+    <MESSAGE value="feat：database api 提交" />
+    <MESSAGE value="feat：homework" />
+    <MESSAGE value="feat：homework2" />
+    <MESSAGE value="feat：blog用户的增删改查" />
+    <MESSAGE value="feat：登录拦截和校验" />
+    <MESSAGE value="feat：异常管理" />
+    <MESSAGE value="feat：文章的管理" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat：文章的管理" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/lesson03/config/main.go</url>
+          <line>30</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/01/longest_commonPrefix.go</url>
+          <line>17</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/01/longest_commonPrefix.go</url>
+          <line>23</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/01/two_sum.go</url>
+          <line>31</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/blog/service/user_service.go</url>
+          <line>25</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/blog/entity/comment.go</url>
+          <line>31</line>
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/blog/entity/comment.go</url>
+          <line>38</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/homework/blog/service/comment_service.go</url>
+          <line>62</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/golang_learning$go_build_channel_go.out" NAME="go build channel.go 覆盖结果" MODIFIED="1787061211896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

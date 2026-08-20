@@ -30,20 +30,15 @@ func (c *Comment) AfterUpdate(tx *gorm.DB) error {
 
 	var count int64
 	if err := tx.Model(&Comment{}).
-		Where("article_id = ? AND status = true", c.ArticleId).
+		Where("article_id = ? AND status = ?", c.ArticleId, true).
 		Count(&count).Error; err != nil {
 		return err
-	}
-	status := false
-	if count > 0 {
-		status = true
 	}
 
 	return tx.Model(&Article{}).
 		Where("id = ?", c.ArticleId).
 		UpdateColumns(map[string]any{
 			"comment_count":  count,
-			"comment_status": status,
-		}).
-		Error
+			"comment_status": count > 0,
+		}).Error
 }
