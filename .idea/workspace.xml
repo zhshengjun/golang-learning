@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="feat：文章的管理">
-      <change afterPath="$PROJECT_DIR$/homework/blog/request/comment_request.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/homework/blog/router/comment_router.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/homework/blog/service/comment_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/homework/blog/entity/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/entity/article.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/homework/blog/entity/comment.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/entity/comment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/homework/blog/router/register_router.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/router/register_router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/homework/blog/service/article_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/article_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/homework/blog/service/user_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/homework/blog/service/user_service.go" afterDir="false" />
-    </list>
+    <list default="true" id="9a1d6bd3-ec9a-4c1d-963a-8f0489acb290" name="更改" comment="feat：文章的管理" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,60 +55,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000084653432622" />
-      <entry key="S2" value="1.0539400249829554" />
-      <entry key="S5" value="1.3110044675207417" />
-      <entry key="S10" value="1.5589230396781422" />
-      <entry key="S30" value="1.9341922921572696" />
-      <entry key="S60" value="2.3361674409483797" />
-      <entry key="M2" value="3.323705318491917" />
-      <entry key="M5" value="8.43531791106814" />
-      <entry key="M10" value="18.679865920194352" />
-      <entry key="M15" value="28.701439285396052" />
-      <entry key="M30" value="62.123711724826954" />
-      <entry key="H1" value="123.50162560083005" />
-      <entry key="H2" value="197.23916320343633" />
-      <entry key="H4" value="303.123080186544" />
-      <entry key="D1" value="1371.1160153178987" />
-      <entry key="W1" value="3143.369691134721" />
+      <entry key="MS500" value="1.0000000004087677" />
+      <entry key="S2" value="1.004496443325499" />
+      <entry key="S5" value="1.1151191733602368" />
+      <entry key="S10" value="1.3393716676232623" />
+      <entry key="S30" value="1.7691973952963946" />
+      <entry key="S60" value="2.285030444629741" />
+      <entry key="M2" value="3.3724124148361554" />
+      <entry key="M5" value="8.032266770181074" />
+      <entry key="M10" value="17.82500239006114" />
+      <entry key="M15" value="27.704460915702043" />
+      <entry key="M30" value="60.79852305806253" />
+      <entry key="H1" value="122.15406217467981" />
+      <entry key="H2" value="196.54860121211576" />
+      <entry key="H4" value="303.0489230450071" />
+      <entry key="D1" value="1371.548310427974" />
+      <entry key="W1" value="3144.8560250649407" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="4.33228749501817E-179" />
-      <entry key="MS500" value="2.124924255076068E-36" />
-      <entry key="S2" value="1.20735744217909E-9" />
-      <entry key="S5" value="2.708535832930071E-4" />
-      <entry key="S10" value="0.01646986315976818" />
-      <entry key="S30" value="0.27742432386800303" />
-      <entry key="S60" value="0.6601214430505071" />
-      <entry key="M2" value="1.1651541763600248" />
-      <entry key="M5" value="2.2139309157579414" />
-      <entry key="M10" value="4.137676542436211" />
-      <entry key="M15" value="5.990815359532954" />
-      <entry key="M30" value="11.626517186913361" />
-      <entry key="H1" value="22.195959125976305" />
-      <entry key="H2" value="35.82857389286932" />
-      <entry key="H4" value="58.690286404075486" />
-      <entry key="D1" value="316.19344204229634" />
-      <entry key="W1" value="705.1840863954039" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="3.0130561868407784E-122" />
+      <entry key="S2" value="4.16631217293505E-31" />
+      <entry key="S5" value="7.045323885719686E-13" />
+      <entry key="S10" value="8.399881892680476E-7" />
+      <entry key="S30" value="0.01028818896771288" />
+      <entry key="S60" value="0.1271220941201149" />
+      <entry key="M2" value="0.5113073023640908" />
+      <entry key="M5" value="1.5925149003967978" />
+      <entry key="M10" value="3.5092657443625734" />
+      <entry key="M15" value="5.367751654401409" />
+      <entry key="M30" value="11.005325141434733" />
+      <entry key="H1" value="21.594867135609732" />
+      <entry key="H2" value="35.34010471375418" />
+      <entry key="H4" value="58.288836144996566" />
+      <entry key="D1" value="315.83194203405367" />
+      <entry key="W1" value="705.068854472073" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="5.80667536622422E-4" />
-      <entry key="MS500" value="0.22532096445108754" />
-      <entry key="S2" value="0.7427171658328846" />
-      <entry key="S5" value="1.1723371464514862" />
-      <entry key="S10" value="1.5014856915556247" />
-      <entry key="S30" value="2.177221025114546" />
-      <entry key="S60" value="2.9727628902302516" />
-      <entry key="M2" value="4.471720654258016" />
-      <entry key="M5" value="10.633653248074438" />
-      <entry key="M10" value="22.7998965420381" />
-      <entry key="M15" value="34.673859035873015" />
-      <entry key="M30" value="73.73028079360795" />
-      <entry key="H1" value="145.67716949750331" />
-      <entry key="H2" value="233.05075921306997" />
-      <entry key="H4" value="361.79939241328367" />
-      <entry key="D1" value="1687.2970544534237" />
-      <entry key="W1" value="3848.549835641976" />
+      <entry key="MS100" value="0.9330329915368074" />
+      <entry key="MS500" value="0.9862327046368822" />
+      <entry key="S2" value="1.0000014915619848" />
+      <entry key="S5" value="1.1022939843860584" />
+      <entry key="S10" value="1.3213763964941319" />
+      <entry key="S30" value="1.765917735257534" />
+      <entry key="S60" value="2.400253978707027" />
+      <entry key="M2" value="3.8721641535053726" />
+      <entry key="M5" value="9.61185920259309" />
+      <entry key="M10" value="21.318434376001186" />
+      <entry key="M15" value="33.05514809606707" />
+      <entry key="M30" value="71.78467308250539" />
+      <entry key="H1" value="143.7289201013453" />
+      <entry key="H2" value="231.87188597554018" />
+      <entry key="H4" value="361.3238438025972" />
+      <entry key="D1" value="1687.36785759888" />
+      <entry key="W1" value="3849.9209374162638" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -411,7 +402,7 @@
       <workItem from="1786950573079" duration="7260000" />
       <workItem from="1787012350851" duration="44295000" />
       <workItem from="1787112098797" duration="6864000" />
-      <workItem from="1787119000048" duration="34447000" />
+      <workItem from="1787119000048" duration="36655000" />
     </task>
     <task id="LOCAL-00001" summary="feat：基础知识提交">
       <option name="closed" value="true" />
@@ -672,7 +663,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/homework/blog/service/comment_service.go</url>
-          <line>62</line>
+          <line>58</line>
           <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
