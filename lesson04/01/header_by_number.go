@@ -1,6 +1,7 @@
 package main
 
 import (
+	"01/commons"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,14 +16,12 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-const Endpoint = "https://eth-sepolia.g.alchemy.com/v2/alch_8a2eNrhkaMX56Vfy7KA3Y"
-
-func main() {
+func main1() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	client, err := ethclient.DialContext(ctx, Endpoint)
+	client, err := ethclient.DialContext(ctx, commons.Endpoint)
 	if err != nil {
 		log.Fatalf("failed to connect to Ethereum client: %v", err)
 	}
@@ -40,7 +39,6 @@ func main() {
 		log.Fatalf("failed get header: %v", err)
 	}
 
-	fmt.Printf("RPC URL: %s\n", Endpoint)
 	fmt.Printf("Chain ID:  %d\n", chainID)
 	fmt.Printf("Block Number: %d\n", header.Number)
 	fmt.Printf("Block Hash: %s\n", header.Hash().Hex())
@@ -50,12 +48,12 @@ func main() {
 }
 
 // 下面这段代码是为了演示， block的 hash可能不同，因为header中没有 Hash 属性，只有 Hash() 函数，获取是实时计算，可能受环境影响，可能和页面展示的不一致。目前我环境的是和 RPC 返回的一致
-func main1() {
+func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	client, err := ethclient.DialContext(ctx, Endpoint)
+	client, err := ethclient.DialContext(ctx, commons.Endpoint)
 	if err != nil {
 		log.Fatalf("failed to connect to Ethereum client: %v", err)
 	}
@@ -67,13 +65,13 @@ func main1() {
 	}
 	fmt.Println("Chain ID:", chainID)
 	num := big.NewInt(11527673)
-	headerNumber := new(big.Int).Sub(num, big.NewInt(0))
-	header, err := client.HeaderByNumber(ctx, headerNumber)
+	_ = new(big.Int).Sub(num, big.NewInt(0))
+	header, err := client.HeaderByNumber(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed get header: %v", err)
 	}
 
-	fmt.Printf("RPC URL: %s\n", Endpoint)
+	fmt.Printf("RPC URL: %s\n", commons.Endpoint)
 	fmt.Printf("Chain ID:  %d\n", chainID)
 	fmt.Printf("Block Number: %d\n", header.Number)
 	fmt.Printf("Block Hash: %s\n", header.Hash().Hex())
