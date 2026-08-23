@@ -24,9 +24,13 @@ func init() {
 
 func main() {
 
-	Balance(viper.GetString("account.from.address"))
+	//BalanceAt(viper.GetString("account.from.address"))
 
-	SendTransaction(viper.GetString("account.from.private"), viper.GetString("account.to.address"), 0.4, []byte("test transaction"))
+	//SendTransaction(viper.GetString("account.from.private"), viper.GetString("account.to.address"), 0.4, []byte("test transaction"))
 
-	Record(viper.GetString("transaction.hash"))
+	//Record(viper.GetString("transaction.hash"))
+
+	//Subscribe()
+	contractAddress := "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+	SubscribeLogs(&contractAddress)
 }

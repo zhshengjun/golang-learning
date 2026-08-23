@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Balance(addr string) *big.Int {
+func BalanceAt(addr string) *big.Int {
 	rawUrl := viper.GetString("raw.url") // RPC 地址
 
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 30*time.Second)
