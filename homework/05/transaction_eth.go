@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-	"strings"
+	"os"
 	"time"
 
 	"github.com/ethereum/go-ethereum"
@@ -17,29 +17,17 @@ import (
 	"github.com/spf13/viper"
 )
 
-func init() {
-	viper.SetConfigFile("config.yaml")
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-	err := viper.BindEnv("account.from.privateKey", "ACCOUNT_FROM_PRIVATE")
-	err = viper.BindEnv("account.to.address", "ACCOUNT_TO_ADDRESS")
-	err = viper.BindEnv("rwa.url", "RAW_URL")
-	if err != nil {
-		return
-	}
-	if err = viper.ReadInConfig(); err != nil {
-		log.Fatalf("读取配置失败: %v", err)
-	}
-}
+// TransactionOriginal 操作原生代币
+func TransactionOriginal(amount float64) {
 
-func main() {
 	//  查询余额
-	BalanceAtByPrivateKey(viper.GetString("account.from.privateKey")) //根据私钥获取
+	BalanceAtByPrivateKey(os.Getenv("ACCOUNT_FROM_PRIVATE")) //根据私钥获取
 
 	// 获取区块信息
 	BlockInfo(big.NewInt(int64(rpc.LatestBlockNumber)))
 
 	// 模拟交易
-	Transaction(viper.GetString("account.from.privateKey"), viper.GetString("account.to.address"), 0.5)
+	Transaction(os.Getenv("ACCOUNT_FROM_PRIVATE"), os.Getenv("ACCOUNT_TO_ADDRESS"), amount)
 }
 
 // Transaction 模拟交易
@@ -125,7 +113,7 @@ func Transaction(privateHex string, toAddressHex string, amount float64) {
 func BlockInfo(blockNumber *big.Int) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancelFunc()
-	client, err := ethclient.DialContext(ctx, viper.GetString("raw.url"))
+	client, err := ethclient.DialContext(ctx, os.Getenv("RAW_URL"))
 	if err != nil {
 		log.Fatalf("failed to connect to raw client: %v", err)
 	}
@@ -171,7 +159,7 @@ func BalanceAtByAddress(addressStr string) {
 
 	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancelFunc()
-	client, err := ethclient.DialContext(ctx, viper.GetString("raw.url"))
+	client, err := ethclient.DialContext(ctx, os.Getenv("RAW_URL"))
 	if err != nil {
 		log.Fatalf("failed to connect to raw client: %v", err)
 	}
