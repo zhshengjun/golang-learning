@@ -199,7 +199,7 @@ func parseIncreasedValue(receipt *types.Receipt, contract, caller common.Address
 
 	eventABI, ok := parsedABI.Events["Increased"]
 	if !ok {
-		return nil, fmt.Errorf("Increased event is missing from ABI")
+		return nil, fmt.Errorf("increased event is missing from ABI")
 	}
 
 	for _, rawLog := range receipt.Logs {
