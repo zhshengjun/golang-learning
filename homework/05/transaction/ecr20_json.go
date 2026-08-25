@@ -1,4 +1,4 @@
-package main
+package transaction
 
 const Erc20Json = `[
   {

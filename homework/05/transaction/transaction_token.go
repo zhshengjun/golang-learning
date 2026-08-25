@@ -1,4 +1,4 @@
-package main
+package transaction
 
 import (
 	"context"
@@ -127,7 +127,8 @@ func TransferToken(privateKeyHex string, toAddressHex string, contractHex string
 	for {
 		receipt, err := client.TransactionReceipt(ctx, txHash)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("failed to get transaction receipt: %v\n", err)
+			time.Sleep(3 * time.Second)
 			continue
 		}
 		fmt.Printf("Tx Status: %d\n", receipt.Status)
