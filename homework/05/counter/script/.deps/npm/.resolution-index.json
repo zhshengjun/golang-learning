@@ -1,0 +1,10 @@
+{
+  "my_counter.sol": {
+    "__sources__": {
+      "my_counter.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.6.12 <0.9.0;\n\ncontract MyCounter {\n\n    /**\n     * 全局数字，用于计数\n     */\n    uint256 internal counter;\n\n    constructor() {\n        counter = 0;\n    }\n\n    /**\n     * 这是我的测试计数器\n     * 自增后，返回自增后的数字\n   */\n    function increase() public returns (uint256) {\n        return ++counter;\n    }\n\n    /**\n     * 返回最新的 counter\n     */\n    function getCounter() public view returns (uint256){\n        return counter;\n    }\n}",
+        "file": "my_counter.sol"
+      }
+    }
+  }
+}

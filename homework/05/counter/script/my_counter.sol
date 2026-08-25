@@ -9,15 +9,16 @@ contract MyCounter {
     uint256 internal counter;
 
     constructor() {
-        counter = 0;
     }
 
+    event Increased(address indexed caller, uint256 value);
     /**
      * 这是我的测试计数器
      * 自增后，返回自增后的数字
    */
-    function increase() public returns (uint256) {
-        return ++counter;
+    function increase() public {
+        uint256 value = ++counter;
+        emit Increased(msg.sender, value);
     }
 
     /**

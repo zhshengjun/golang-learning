@@ -122,8 +122,8 @@ func TransferToken(privateKeyHex string, toAddressHex string, contractHex string
 	}
 	txHash := transaction.Hash()
 	fmt.Println("txHash:", txHash.Hex())
-	//9. 通过hash查询回执
 
+	//9. 通过hash查询回执
 	for {
 		receipt, err := client.TransactionReceipt(ctx, txHash)
 		if err != nil {
