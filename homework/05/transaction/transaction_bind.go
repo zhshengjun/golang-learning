@@ -87,9 +87,24 @@ func TransferTokenByBind(privateKeyHex string, toAddressHex string, contractHex 
 		return fmt.Errorf("create transact opts: %w", err)
 	}
 	auth.Context = ctx
+	auth.NoSend = true
 
 	tx, err := bound.Transact(auth, "transfer", to, amountWei)
 	if err != nil {
+		return fmt.Errorf("build transfer transaction: %w", err)
+	}
+
+	// Transact 已按 Bind 的规则完成 gas、fee、nonce、构造和签名；这里先检查 ETH 余额。
+	ethBalance, err := client.BalanceAt(ctx, from, nil)
+	if err != nil {
+		return fmt.Errorf("get ETH balance: %w", err)
+	}
+	maxCost := tx.Cost()
+	if ethBalance.Cmp(maxCost) < 0 {
+		return fmt.Errorf("insufficient ETH for gas: balance=%s, maxCost=%s", ethBalance, maxCost)
+	}
+
+	if err := client.SendTransaction(ctx, tx); err != nil {
 		return fmt.Errorf("send transfer transaction: %w", err)
 	}
 
