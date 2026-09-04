@@ -31,10 +31,10 @@ func TestAlchemyTransferStatistics(t *testing.T) {
 	if got := formatTime(100); got != "1970-01-01 08:01:40" {
 		t.Fatalf("formatTime() = %q", got)
 	}
-	if got := estimatedMiningTime(10_000, 5_000); got != 8_200 {
-		t.Fatalf("estimatedMiningTime() = %d, want 8200", got)
+	if got, want := estimatedMiningTime(10_000, 5_000), uint64(10_000)-miningLeadSeconds; got != want {
+		t.Fatalf("estimatedMiningTime() = %d, want %d", got, want)
 	}
-	if got := estimatedMiningTime(6_000, 5_000); got != 5_000 {
+	if got := estimatedMiningTime(5_000+miningLeadSeconds, 5_000); got != 5_000 {
 		t.Fatalf("estimatedMiningTime() = %d, want now", got)
 	}
 }
@@ -42,8 +42,8 @@ func TestAlchemyTransferStatistics(t *testing.T) {
 func TestClaimAvailability(t *testing.T) {
 	now := uint64(1_000_000)
 	empty := &accountStat{TotalWei: new(big.Int)}
-	if availableAt, total := claimAvailability(empty, now); availableAt != now || total.Sign() != 0 {
-		t.Fatalf("empty account = %d, %s; want now, 0", availableAt, total)
+	if availableAt, total48Hours, total7Days := claimAvailability(empty, now); availableAt != now || total48Hours.Sign() != 0 || total7Days.Sign() != 0 {
+		t.Fatalf("empty account = %d, %s, %s; want now, 0, 0", availableAt, total48Hours, total7Days)
 	}
 
 	blockedAddress := common.HexToAddress("0x1111111111111111111111111111111111111111")
@@ -54,12 +54,31 @@ func TestClaimAvailability(t *testing.T) {
 	ready := &accountStat{TotalWei: new(big.Int)}
 	ready.record(new(big.Int).Set(singleClaimWei), now-10*60*60)
 
-	if availableAt, total := claimAvailability(blocked, now); availableAt != now+8*60*60 || total.Cmp(claimLimitWei) != 0 {
-		t.Fatalf("blocked account = %d, %s", availableAt, total)
+	if availableAt, total48Hours, _ := claimAvailability(blocked, now); availableAt != now+8*60*60 || total48Hours.Cmp(claimLimitWei) != 0 {
+		t.Fatalf("blocked account = %d, %s", availableAt, total48Hours)
+	}
+	weeklyBlocked := &accountStat{TotalWei: new(big.Int)}
+	for daysAgo := uint64(3); daysAgo <= 6; daysAgo++ {
+		weeklyBlocked.record(new(big.Int).Set(singleClaimWei), now-daysAgo*24*60*60)
+	}
+	if availableAt, total48Hours, total7Days := claimAvailability(weeklyBlocked, now); availableAt != now+24*60*60 || total48Hours.Sign() != 0 || total7Days.Cmp(sevenDayLimitWei) != 0 {
+		t.Fatalf("weekly blocked account = %d, %s, %s", availableAt, total48Hours, total7Days)
 	}
 	stats := map[common.Address]*accountStat{blockedAddress: blocked, readyAddress: ready}
 	accounts := sortAccountsByAvailability([]string{blockedAddress.Hex(), readyAddress.Hex()}, stats, now)
 	if common.HexToAddress(accounts[0]) != readyAddress || common.HexToAddress(accounts[1]) != blockedAddress {
 		t.Fatalf("sortAccountsByAvailability() = %v", accounts)
+	}
+	weeklyAddress := common.HexToAddress("0x3333333333333333333333333333333333333333")
+	stats[weeklyAddress] = weeklyBlocked
+	accounts = sortAccountsByAvailability([]string{readyAddress.Hex(), weeklyAddress.Hex()}, stats, now)
+	if common.HexToAddress(accounts[0]) != readyAddress {
+		t.Fatalf("earlier account was not first: %v", accounts)
+	}
+	emptyAddress := common.HexToAddress("0x4444444444444444444444444444444444444444")
+	stats[emptyAddress] = empty
+	accounts = sortAccountsByAvailability([]string{readyAddress.Hex(), emptyAddress.Hex()}, stats, now)
+	if common.HexToAddress(accounts[0]) != emptyAddress {
+		t.Fatalf("48h unclaimed account did not win equal-time tie: %v", accounts)
 	}
 }

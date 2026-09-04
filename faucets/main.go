@@ -23,12 +23,14 @@ var faucetsChainID = big.NewInt(11155111)
 var utc8 = time.FixedZone("UTC+8", 8*60*60)
 
 const claimWindowSeconds = uint64(48 * 60 * 60)
+const sevenDayWindowSeconds = uint64(7 * 24 * 60 * 60)
 
-const miningLeadMins = uint64(0)
+const miningLeadMins = uint64(90)
 const miningLeadSeconds = miningLeadMins * 60
 
 var singleClaimWei = big.NewInt(2_500_000_000_000_000_000)
 var claimLimitWei = big.NewInt(5_000_000_000_000_000_000)
+var sevenDayLimitWei = new(big.Int).Mul(big.NewInt(10), big.NewInt(1_000_000_000_000_000_000))
 
 type config struct {
 	Raw struct {
@@ -42,7 +44,7 @@ type config struct {
 	} `yaml:"account"`
 	Faucets struct {
 		Accounts []string `yaml:"accounts"`
-		Interval uint64   `yaml:"interval"`
+		Observe  []string `yaml:"observe"`
 	} `yaml:"faucets"`
 }
 
@@ -127,8 +129,8 @@ func run(configPath string) error {
 		return fmt.Errorf("查询最新区块: %w", err)
 	}
 	cutoff := uint64(0)
-	if cfg.Faucets.Interval < latest.Time {
-		cutoff = latest.Time - cfg.Faucets.Interval
+	if sevenDayWindowSeconds < latest.Time {
+		cutoff = latest.Time - sevenDayWindowSeconds
 	}
 	start, err := firstBlockSince(ctx, client, latest.Number.Uint64(), cutoff)
 	if err != nil {
@@ -137,8 +139,15 @@ func run(configPath string) error {
 
 	sender := common.HexToAddress(cfg.Account.From.Address)
 	stats := make(map[common.Address]*accountStat, len(cfg.Faucets.Accounts))
+	balances := make(map[common.Address]*big.Int, len(cfg.Faucets.Accounts))
 	for _, value := range cfg.Faucets.Accounts {
-		stats[common.HexToAddress(value)] = &accountStat{TotalWei: new(big.Int)}
+		address := common.HexToAddress(value)
+		stats[address] = &accountStat{TotalWei: new(big.Int)}
+		balance, err := client.BalanceAt(ctx, address, latest.Number)
+		if err != nil {
+			return fmt.Errorf("查询账户 %s 余额: %w", address, err)
+		}
+		balances[address] = balance
 	}
 
 	for _, value := range cfg.Faucets.Accounts {
@@ -150,13 +159,24 @@ func run(configPath string) error {
 
 	now := latest.Time
 	fmt.Printf("滚动时间以 session 创建为准，统计会累积在领取的 IP 上，当前时间是提前 %d min\n", miningLeadMins)
-	fmt.Println("下面是基于 Alchemy 链上数据估算可挖矿时间:")
+	fmt.Println("基于 Alchemy 链上数据的可挖矿顺序:")
 	for index, value := range sortAccountsByAvailability(cfg.Faucets.Accounts, stats, now) {
 		address := common.HexToAddress(value)
 		stat := stats[address]
-		availableAt, last48Hours := claimAvailability(stat, now)
-		fmt.Printf("%d. %s  预计可开始时间=%s  48h=%s ETH  72h=%s ETH\n",
-			index+1, address, formatAvailability(availableAt, now), weiToETH(last48Hours), weiToETH(stat.TotalWei))
+		availableAt, last48Hours, last7Days := claimAvailability(stat, now)
+		fmt.Printf("%d. %s  余额=%s ETH  预计可开始时间=%s  2d=%s ETH  7d=%s ETH\n",
+			index+1, address, weiToETH(balances[address]), formatAvailability(availableAt, now), weiToETH(last48Hours), weiToETH(last7Days))
+	}
+	if len(cfg.Faucets.Observe) > 0 {
+		fmt.Println("观察钱包:")
+	}
+	for index, value := range cfg.Faucets.Observe {
+		address := common.HexToAddress(value)
+		balance, err := client.BalanceAt(ctx, address, latest.Number)
+		if err != nil {
+			return fmt.Errorf("查询观察钱包 %s 余额: %w", address, err)
+		}
+		fmt.Printf("%d. %s  余额=%s ETH\n", index+1, address, weiToETH(balance))
 	}
 	return nil
 }
@@ -180,18 +200,17 @@ func loadConfig(path string) (config, error) {
 	if !common.IsHexAddress(cfg.Account.From.Address) {
 		return cfg, errors.New("account.from.address 不是有效地址")
 	}
-	if cfg.Faucets.Interval == 0 {
-		return cfg, errors.New("faucets.interval 必须大于 0")
-	}
-	if cfg.Faucets.Interval < claimWindowSeconds {
-		return cfg, errors.New("faucets.interval 不能小于 172800 秒")
-	}
 	if len(cfg.Faucets.Accounts) == 0 {
 		return cfg, errors.New("faucets.accounts 不能为空")
 	}
 	for _, account := range cfg.Faucets.Accounts {
 		if !common.IsHexAddress(account) {
 			return cfg, fmt.Errorf("faucets.accounts 包含无效地址: %q", account)
+		}
+	}
+	for _, account := range cfg.Faucets.Observe {
+		if !common.IsHexAddress(account) {
+			return cfg, fmt.Errorf("faucets.observe 包含无效地址: %q", account)
 		}
 	}
 	return cfg, nil
@@ -268,27 +287,33 @@ func (stat *accountStat) record(value *big.Int, timestamp uint64) {
 func sortAccountsByAvailability(accounts []string, stats map[common.Address]*accountStat, now uint64) []string {
 	sorted := append([]string(nil), accounts...)
 	sort.SliceStable(sorted, func(i, j int) bool {
-		left, _ := claimAvailability(stats[common.HexToAddress(sorted[i])], now)
-		right, _ := claimAvailability(stats[common.HexToAddress(sorted[j])], now)
-		return estimatedMiningTime(left, now) < estimatedMiningTime(right, now)
+		left, left48Hours, _ := claimAvailability(stats[common.HexToAddress(sorted[i])], now)
+		right, right48Hours, _ := claimAvailability(stats[common.HexToAddress(sorted[j])], now)
+		left = estimatedMiningTime(left, now)
+		right = estimatedMiningTime(right, now)
+		if left != right {
+			return left < right
+		}
+		if left48Hours.Sign() == 0 && right48Hours.Sign() != 0 {
+			return true
+		}
+		if left48Hours.Sign() != 0 && right48Hours.Sign() == 0 {
+			return false
+		}
+		return false
 	})
 	return sorted
 }
 
-func claimAvailability(stat *accountStat, now uint64) (uint64, *big.Int) {
-	cutoff := uint64(0)
-	if now > claimWindowSeconds {
-		cutoff = now - claimWindowSeconds
-	}
-	recent := make([]claimTransfer, 0, len(stat.Transfers))
-	total := new(big.Int)
-	for _, transfer := range stat.Transfers {
-		if transfer.Timestamp > cutoff {
-			recent = append(recent, transfer)
-			total.Add(total, transfer.Value)
-		}
-	}
-	if canClaim(total) {
+func claimAvailability(stat *accountStat, now uint64) (uint64, *big.Int, *big.Int) {
+	available48Hours, total48Hours := windowAvailability(stat, now, claimWindowSeconds, claimLimitWei)
+	available7Days, total7Days := windowAvailability(stat, now, sevenDayWindowSeconds, sevenDayLimitWei)
+	return max(available48Hours, available7Days), total48Hours, total7Days
+}
+
+func windowAvailability(stat *accountStat, now, window uint64, limit *big.Int) (uint64, *big.Int) {
+	recent, total := transfersWithin(stat, now, window)
+	if canClaim(total, limit) {
 		return now, total
 	}
 	sort.Slice(recent, func(i, j int) bool { return recent[i].Timestamp < recent[j].Timestamp })
@@ -299,15 +324,31 @@ func claimAvailability(stat *accountStat, now uint64) (uint64, *big.Int) {
 			remaining.Sub(remaining, recent[index].Value)
 			index++
 		}
-		if canClaim(remaining) {
-			return timestamp + claimWindowSeconds, total
+		if canClaim(remaining, limit) {
+			return timestamp + window, total
 		}
 	}
 	return now, total
 }
 
-func canClaim(current *big.Int) bool {
-	return new(big.Int).Add(new(big.Int).Set(current), singleClaimWei).Cmp(claimLimitWei) <= 0
+func transfersWithin(stat *accountStat, now, window uint64) ([]claimTransfer, *big.Int) {
+	cutoff := uint64(0)
+	if now > window {
+		cutoff = now - window
+	}
+	recent := make([]claimTransfer, 0, len(stat.Transfers))
+	total := new(big.Int)
+	for _, transfer := range stat.Transfers {
+		if transfer.Timestamp > cutoff {
+			recent = append(recent, transfer)
+			total.Add(total, transfer.Value)
+		}
+	}
+	return recent, total
+}
+
+func canClaim(current, limit *big.Int) bool {
+	return new(big.Int).Add(new(big.Int).Set(current), singleClaimWei).Cmp(limit) <= 0
 }
 
 func formatTime(timestamp uint64) string {
