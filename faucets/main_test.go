@@ -31,15 +31,13 @@ func TestAlchemyTransferStatistics(t *testing.T) {
 	if got := formatTime(100); got != "1970-01-01 08:01:40" {
 		t.Fatalf("formatTime() = %q", got)
 	}
-	if got, want := estimatedMiningTime(10_000, 5_000), uint64(10_000)-miningLeadSeconds; got != want {
-		t.Fatalf("estimatedMiningTime() = %d, want %d", got, want)
-	}
-	if got := estimatedMiningTime(5_000+miningLeadSeconds, 5_000); got != 5_000 {
-		t.Fatalf("estimatedMiningTime() = %d, want now", got)
-	}
 }
 
 func TestClaimAvailability(t *testing.T) {
+	previousOffset := sessionOffsetSeconds
+	sessionOffsetSeconds = 60 * 60
+	t.Cleanup(func() { sessionOffsetSeconds = previousOffset })
+
 	now := uint64(1_000_000)
 	empty := &accountStat{TotalWei: new(big.Int)}
 	if availableAt, total48Hours, total7Days := claimAvailability(empty, now); availableAt != now || total48Hours.Sign() != 0 || total7Days.Sign() != 0 {
@@ -54,14 +52,14 @@ func TestClaimAvailability(t *testing.T) {
 	ready := &accountStat{TotalWei: new(big.Int)}
 	ready.record(new(big.Int).Set(singleClaimWei), now-10*60*60)
 
-	if availableAt, total48Hours, _ := claimAvailability(blocked, now); availableAt != now+8*60*60 || total48Hours.Cmp(claimLimitWei) != 0 {
+	if availableAt, total48Hours, _ := claimAvailability(blocked, now); availableAt != now+7*60*60 || total48Hours.Cmp(twoDayLimitWei) != 0 {
 		t.Fatalf("blocked account = %d, %s", availableAt, total48Hours)
 	}
 	weeklyBlocked := &accountStat{TotalWei: new(big.Int)}
 	for daysAgo := uint64(3); daysAgo <= 6; daysAgo++ {
 		weeklyBlocked.record(new(big.Int).Set(singleClaimWei), now-daysAgo*24*60*60)
 	}
-	if availableAt, total48Hours, total7Days := claimAvailability(weeklyBlocked, now); availableAt != now+24*60*60 || total48Hours.Sign() != 0 || total7Days.Cmp(sevenDayLimitWei) != 0 {
+	if availableAt, total48Hours, total7Days := claimAvailability(weeklyBlocked, now); availableAt != now+23*60*60 || total48Hours.Sign() != 0 || total7Days.Cmp(sevenDayLimitWei) != 0 {
 		t.Fatalf("weekly blocked account = %d, %s, %s", availableAt, total48Hours, total7Days)
 	}
 	stats := map[common.Address]*accountStat{blockedAddress: blocked, readyAddress: ready}
@@ -80,5 +78,11 @@ func TestClaimAvailability(t *testing.T) {
 	accounts = sortAccountsByAvailability([]string{readyAddress.Hex(), emptyAddress.Hex()}, stats, now)
 	if common.HexToAddress(accounts[0]) != emptyAddress {
 		t.Fatalf("48h unclaimed account did not win equal-time tie: %v", accounts)
+	}
+	shifted := &accountStat{TotalWei: new(big.Int)}
+	shifted.record(new(big.Int).Set(singleClaimWei), now-twoDayWindowSeconds+30*60)
+	_, total48Hours := transfersWithin(shifted, now, twoDayWindowSeconds)
+	if total48Hours.Sign() != 0 {
+		t.Fatalf("session offset did not expire 2d transfer: %s", total48Hours)
 	}
 }

@@ -22,14 +22,13 @@ import (
 var faucetsChainID = big.NewInt(11155111)
 var utc8 = time.FixedZone("UTC+8", 8*60*60)
 
-const claimWindowSeconds = uint64(48 * 60 * 60)
+const twoDayWindowSeconds = uint64(2 * 24 * 60 * 60)
 const sevenDayWindowSeconds = uint64(7 * 24 * 60 * 60)
 
-const miningLeadMins = uint64(90)
-const miningLeadSeconds = miningLeadMins * 60
+var sessionOffsetSeconds uint64
 
 var singleClaimWei = big.NewInt(2_500_000_000_000_000_000)
-var claimLimitWei = big.NewInt(5_000_000_000_000_000_000)
+var twoDayLimitWei = big.NewInt(5_000_000_000_000_000_000)
 var sevenDayLimitWei = new(big.Int).Mul(big.NewInt(10), big.NewInt(1_000_000_000_000_000_000))
 
 type config struct {
@@ -43,8 +42,9 @@ type config struct {
 		} `yaml:"from"`
 	} `yaml:"account"`
 	Faucets struct {
-		Accounts []string `yaml:"accounts"`
-		Observe  []string `yaml:"observe"`
+		Accounts             []string `yaml:"accounts"`
+		Observe              []string `yaml:"observe"`
+		SessionOffsetSeconds uint64   `yaml:"session_offset_seconds"`
 	} `yaml:"faucets"`
 }
 
@@ -106,6 +106,7 @@ func run(configPath string) error {
 	if err != nil {
 		return err
 	}
+	sessionOffsetSeconds = cfg.Faucets.SessionOffsetSeconds
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
@@ -158,7 +159,7 @@ func run(configPath string) error {
 	}
 
 	now := latest.Time
-	fmt.Printf("滚动时间以 session 创建为准，统计会累积在领取的 IP 上，当前时间是提前 %d min\n", miningLeadMins)
+	fmt.Printf("链上到账时间按 session 创建时间提前 %d min 估算\n", sessionOffsetSeconds/60)
 	fmt.Println("基于 Alchemy 链上数据的可挖矿顺序:")
 	for index, value := range sortAccountsByAvailability(cfg.Faucets.Accounts, stats, now) {
 		address := common.HexToAddress(value)
@@ -202,6 +203,9 @@ func loadConfig(path string) (config, error) {
 	}
 	if len(cfg.Faucets.Accounts) == 0 {
 		return cfg, errors.New("faucets.accounts 不能为空")
+	}
+	if cfg.Faucets.SessionOffsetSeconds == 0 {
+		return cfg, errors.New("faucets.session_offset_seconds 必须大于 0")
 	}
 	for _, account := range cfg.Faucets.Accounts {
 		if !common.IsHexAddress(account) {
@@ -289,8 +293,6 @@ func sortAccountsByAvailability(accounts []string, stats map[common.Address]*acc
 	sort.SliceStable(sorted, func(i, j int) bool {
 		left, left48Hours, _ := claimAvailability(stats[common.HexToAddress(sorted[i])], now)
 		right, right48Hours, _ := claimAvailability(stats[common.HexToAddress(sorted[j])], now)
-		left = estimatedMiningTime(left, now)
-		right = estimatedMiningTime(right, now)
 		if left != right {
 			return left < right
 		}
@@ -306,7 +308,7 @@ func sortAccountsByAvailability(accounts []string, stats map[common.Address]*acc
 }
 
 func claimAvailability(stat *accountStat, now uint64) (uint64, *big.Int, *big.Int) {
-	available48Hours, total48Hours := windowAvailability(stat, now, claimWindowSeconds, claimLimitWei)
+	available48Hours, total48Hours := windowAvailability(stat, now, twoDayWindowSeconds, twoDayLimitWei)
 	available7Days, total7Days := windowAvailability(stat, now, sevenDayWindowSeconds, sevenDayLimitWei)
 	return max(available48Hours, available7Days), total48Hours, total7Days
 }
@@ -339,8 +341,12 @@ func transfersWithin(stat *accountStat, now, window uint64) ([]claimTransfer, *b
 	recent := make([]claimTransfer, 0, len(stat.Transfers))
 	total := new(big.Int)
 	for _, transfer := range stat.Transfers {
-		if transfer.Timestamp > cutoff {
-			recent = append(recent, transfer)
+		if transfer.Timestamp > sessionOffsetSeconds {
+			timestamp := transfer.Timestamp - sessionOffsetSeconds
+			if timestamp <= cutoff {
+				continue
+			}
+			recent = append(recent, claimTransfer{Value: transfer.Value, Timestamp: timestamp})
 			total.Add(total, transfer.Value)
 		}
 	}
@@ -359,18 +365,10 @@ func formatTime(timestamp uint64) string {
 }
 
 func formatAvailability(timestamp, now uint64) string {
-	timestamp = estimatedMiningTime(timestamp, now)
-	if timestamp == now {
+	if timestamp <= now {
 		return "现在"
 	}
 	return formatTime(timestamp)
-}
-
-func estimatedMiningTime(timestamp, now uint64) uint64 {
-	if timestamp <= now+miningLeadSeconds {
-		return now
-	}
-	return timestamp - miningLeadSeconds
 }
 
 func weiToETH(wei *big.Int) string {
